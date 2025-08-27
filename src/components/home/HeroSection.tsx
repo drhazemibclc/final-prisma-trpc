@@ -33,7 +33,7 @@ export function HeroSection() {
                 >
                     <Link
                         className='rounded-full bg-blue-600 px-8 py-3 font-semibold text-lg text-white shadow-lg transition-transform duration-200 hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-                        href='/sign-up'
+                        href='/signup'
                     >
                         Start Your Free Trial
                     </Link>

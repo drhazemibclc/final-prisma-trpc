@@ -16,26 +16,27 @@ export default function Home() {
         <main className='flex min-h-screen flex-col'>
             <Header />
             <HeroSection />
-            <section className='container mx-auto max-w-4xl px-4 py-6'>
-                <pre
-                    className={`mb-4 overflow-x-auto font-mono text-muted-foreground text-xs sm:text-sm ${TITLE_TEXT}`}
-                >
-                    {process.env['NEXT_PUBLIC_ASCII_TITLE'] ?? ''}
-                </pre>
-                <div className='rounded-xl border bg-card p-4 shadow-sm'>
-                    <h2 className='mb-3 font-semibold text-lg'>API Status</h2>
-                    <div className='flex items-center gap-2'>
-                        <span
-                            className={`h-3 w-3 rounded-full ${
-                                isLoading ? 'animate-pulse bg-yellow-500' : data ? 'bg-green-500' : 'bg-red-500'
-                            }`}
-                        />
-                        <span className='text-muted-foreground text-sm'>
-                            {isLoading ? 'Checking...' : data ? 'Connected' : 'Disconnected'}
-                        </span>
-                    </div>
-                </div>
-            </section>
+
+            {/* TITLE_TEXT Section */}
+          <section className='container mx-auto max-w-4xl px-4 py-6'>
+    <pre className='mb-4 overflow-x-auto font-mono text-muted-foreground text-xs sm:text-sm'>
+        {TITLE_TEXT}
+    </pre>
+    <div className='rounded-xl border bg-card p-4 shadow-sm'>
+        <h2 className='mb-3 font-semibold text-lg'>API Status</h2>
+        <div className='flex items-center gap-2'>
+            <span
+                className={`h-3 w-3 rounded-full ${
+                    isLoading ? 'animate-pulse bg-yellow-500' : data ? 'bg-green-500' : 'bg-red-500'
+                }`}
+            />
+            <span className='text-muted-foreground text-sm'>
+                {isLoading ? 'Checking...' : data ? 'Connected' : 'Disconnected'}
+            </span>
+        </div>
+    </div>
+</section>
+
             <FeaturesSection />
             <TestimonialsSection />
             <FinalCTA />
