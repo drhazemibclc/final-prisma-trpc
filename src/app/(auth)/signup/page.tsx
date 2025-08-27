@@ -22,7 +22,7 @@ export default function SignupPage() {
                         <div className='flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary'>
                             <BabyIcon className='size-6' />
                         </div>
-                        <span className='font-semibold text-lg tracking-tight'>PediaCare Clinic</span>
+                        <span className='font-semibold text-lg tracking-tight'>Smart Clinic</span>
                     </Link>
                     <h1 className='font-bold text-xl'>Create your account</h1>
                     <p className='text-muted-foreground text-sm'>

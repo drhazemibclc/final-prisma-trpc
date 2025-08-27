@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
-import Header from '@/components/header';
+// import Header from '@/components/header';
 import Providers from '@/components/providers';
 import { geistMono, geistSans } from '@/styles/fonts';
 
@@ -22,9 +22,7 @@ export default function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <Providers>
                     <div className='grid h-svh grid-rows-[auto_1fr]'>
-                        <Header />
-                        {children}
-                    </div>
+                        {children}</div>
                 </Providers>
             </body>
         </html>

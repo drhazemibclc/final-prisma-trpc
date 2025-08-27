@@ -1,6 +1,6 @@
 'use client';
 
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -15,7 +15,7 @@ import { signUp } from '@/lib/auth/auth-client';
 
 export const signupSchema = z.object({
     name: z.string().min(1, { message: 'Name is required.' }),
-    email: z.email({ message: 'Please enter a valid email.' }),
+    email: z.string().email({ message: 'Please enter a valid email.' }),
     password: z.string().min(8, { message: 'Password must be at least 8 characters.' })
 });
 
@@ -25,15 +25,11 @@ export default function SignupForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<z.infer<typeof signupSchema>>({
-        resolver: standardSchemaResolver(signupSchema),
-        defaultValues: {
-            name: '',
-            email: '',
-            password: ''
-        }
+        resolver: zodResolver(signupSchema),
+        defaultValues: { name: '', email: '', password: '' }
     });
 
-    async function onSubmit(values: z.infer<typeof signupSchema>) {
+    const onSubmit = async (values: z.infer<typeof signupSchema>) => {
         setIsSubmitting(true);
 
         try {
@@ -55,20 +51,21 @@ export default function SignupForm() {
                     }
                 }
             );
-        } catch (error) {
-            console.error('Unexpected error:', error);
+        } catch (err) {
+            console.error(err);
             toast.error('Unexpected error occurred.');
         } finally {
             setIsSubmitting(false);
         }
-    }
+    };
 
     return (
         <Form {...form}>
             <form
-                className='space-y-6'
                 onSubmit={form.handleSubmit(onSubmit)}
+                className='space-y-6'
             >
+                {/* Name */}
                 <FormField
                     control={form.control}
                     name='name'
@@ -86,6 +83,7 @@ export default function SignupForm() {
                     )}
                 />
 
+                {/* Email */}
                 <FormField
                     control={form.control}
                     name='email'
@@ -94,8 +92,8 @@ export default function SignupForm() {
                             <FormLabel>Email Address</FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder='johndoe@example.com'
                                     type='email'
+                                    placeholder='johndoe@example.com'
                                     {...field}
                                 />
                             </FormControl>
@@ -104,6 +102,7 @@ export default function SignupForm() {
                     )}
                 />
 
+                {/* Password */}
                 <FormField
                     control={form.control}
                     name='password'
@@ -112,19 +111,20 @@ export default function SignupForm() {
                             <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input
-                                    autoComplete='new-password'
-                                    placeholder='••••••••'
                                     type={showPassword ? 'text' : 'password'}
+                                    placeholder='••••••••'
+                                    autoComplete='new-password'
                                     {...field}
                                 />
                             </FormControl>
                             <FormDescription className='flex items-center justify-between text-xs'>
-                                <label className='flex cursor-pointer items-center gap-2'>
+                                <label className='flex cursor-pointer select-none items-center gap-2'>
                                     <Checkbox
                                         checked={showPassword}
                                         onCheckedChange={checked => setShowPassword(!!checked)}
                                     />
-                                    Show password <textarea />
+                                    Show password
+                                    <textarea /> 
                                 </label>
                             </FormDescription>
                             <FormMessage />
@@ -132,18 +132,19 @@ export default function SignupForm() {
                     )}
                 />
 
+                {/* Submit */}
                 <Button
+                    type='submit'
                     className='w-full'
                     disabled={isSubmitting}
-                    type='submit'
                 >
                     {isSubmitting ? (
                         <span className='flex items-center justify-center gap-2'>
-                            <div className='h-4 w-4 animate-spin rounded-full border-2 border-t-transparent' />
+                            <div className='h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-t-transparent' />
                             Creating account...
                         </span>
                     ) : (
-                        'Sign up'
+                        'Sign Up'
                     )}
                 </Button>
             </form>

@@ -5,9 +5,25 @@ export default {
         ignoreDuringBuilds: true
     },
     serverExternalPackages: ['@trpc/server'],
-      images: {
-    domains: ['placehold.co'], // add your image host here
+     images: {
+        dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "academy-public.coinmarketcap.com",
+      },
+      {
+        protocol: "https",
+        hostname: "coin-images.coingecko.com",
+      },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+    ],
+    unoptimized: true,
   },
+
 
     // Root directory (optional, auto-detected if not set)
     turbopack: {

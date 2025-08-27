@@ -1,10 +1,4 @@
-'use client'
-
-const _MAGIC_NUMBER_1 = -2;
-const _MAGIC_NUMBER_2 = -1;
-const _MAGIC_NUMBER_3 = -4;
-
-
+'use client';
 
 import Link from 'next/link';
 import { ModeToggle } from './mode-toggle';
@@ -18,8 +12,8 @@ export default function Header() {
 
     return (
         <div>
-            <div className='pxMAGIC_NUMBER_1 pyMAGIC_NUMBER_2 flex flex-row items-center justify-between'>
-                <nav className='gapMAGIC_NUMBER_3 flex text-lg'>
+            <div className='flex flex-row items-center justify-between px-2 py-1'>
+                <nav className='flex gap-4 text-lg'>
                     {links.map(({ to, label }) => {
                         return (
                             <Link
