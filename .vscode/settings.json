@@ -1,0 +1,100 @@
+{
+    // ================================
+    // Formatter & Biome integration
+    // ================================
+    "editor.defaultFormatter": "biomejs.biome",
+    "[javascript]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[graphql]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+
+    // ================================
+    // TypeScript SDK
+    // ================================
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+
+    // ================================
+    // Format & Actions
+    // ================================
+    "editor.formatOnSave": false,
+    "editor.formatOnPaste": false,
+    "editor.codeActionsOnSave": {
+        "source.removeUnusedImports": "explicit",
+        "source.addMissingImports.ts": "explicit",
+        "source.fixAll.biome": "explicit",
+        "source.organizeImports.biome": "explicit"
+    },
+
+    // ================================
+    // Editor / UX
+    // ================================
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.cursorSmoothCaretAnimation": "explicit",
+    "editor.formatOnType": true,
+
+    // ================================
+    // Emmet & HTML/React
+    // ================================
+    "emmet.showExpandedAbbreviation": "never",
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "typescript": "typescriptreact"
+    },
+
+    // ================================
+    // Files & Exclude
+    // ================================
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/.turbo": true,
+        "**/dist": true
+    },
+    "files.autoSave": "off",
+
+    // ================================
+    // Suggestions & IntelliSense
+    // ================================
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+    },
+    "editor.suggestSelection": "first",
+    "editor.suggest.showIcons": true,
+    "editor.suggest.localityBonus": true,
+
+    // ================================
+    // Git Integration
+    // ================================
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "WillLuke.nextjs.addTypesOnSave": true,
+    "WillLuke.nextjs.hasPrompted": true
+}

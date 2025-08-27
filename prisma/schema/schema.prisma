@@ -1,0 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+  moduleFormat = "esm"
+  previewFeatures = ["views", "relationJoins"]
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
