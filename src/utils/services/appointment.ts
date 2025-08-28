@@ -4,17 +4,17 @@ const MAGIC_NUMBER_3 = 500;
 const MAGIC_NUMBER_4 = 10;
 const _MAGIC_NUMBER_5 = 9;
 
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from "@prisma/client";
 
-import { db } from '@/server/db';
+import { db } from "@/server/db";
 
 export async function getAppointmentById(id: number) {
     try {
         if (!id) {
             return {
                 success: false,
-                message: 'Appointment id does not exist.',
-                status: MAGIC_NUMBER_1
+                message: "Appointment id does not exist.",
+                status: MAGIC_NUMBER_1,
             };
         }
 
@@ -22,7 +22,7 @@ export async function getAppointmentById(id: number) {
             where: { id },
             include: {
                 doctor: {
-                    select: { id: true, name: true, specialization: true, img: true }
+                    select: { id: true, name: true, specialization: true, img: true },
                 },
                 patient: {
                     select: {
@@ -33,18 +33,18 @@ export async function getAppointmentById(id: number) {
                         gender: true,
                         img: true,
                         address: true,
-                        phone: true
-                    }
-                }
-            }
+                        phone: true,
+                    },
+                },
+            },
         });
 
         if (!data) {
             return {
                 success: false,
-                message: 'Appointment data not found',
+                message: "Appointment data not found",
                 status: MAGIC_NUMBER_2,
-                data: null
+                data: null,
             };
         }
 
@@ -53,8 +53,8 @@ export async function getAppointmentById(id: number) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_3
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_3,
         };
     }
 }
@@ -73,27 +73,27 @@ const buildQuery = (id?: string, search?: string) => {
               OR: [
                   {
                       patient: {
-                          firstName: { contains: search, mode: 'insensitive' }
-                      }
+                          firstName: { contains: search, mode: "insensitive" },
+                      },
                   },
                   {
                       patient: {
-                          lastName: { contains: search, mode: 'insensitive' }
-                      }
+                          lastName: { contains: search, mode: "insensitive" },
+                      },
                   },
                   {
                       doctor: {
-                          name: { contains: search, mode: 'insensitive' }
-                      }
-                  }
-              ]
+                          name: { contains: search, mode: "insensitive" },
+                      },
+                  },
+              ],
           }
         : {};
 
     // ID filtering conditions if ID exists
     const idConditions: Prisma.AppointmentWhereInput = id
         ? {
-              OR: [{ patientId: id }, { doctorId: id }]
+              OR: [{ patientId: id }, { doctorId: id }],
           }
         : {};
 
@@ -103,8 +103,8 @@ const buildQuery = (id?: string, search?: string) => {
             ? {
                   AND: [
                       ...(Object.keys(searchConditions).length > 0 ? [searchConditions] : []),
-                      ...(Object.keys(idConditions).length > 0 ? [idConditions] : [])
-                  ]
+                      ...(Object.keys(idConditions).length > 0 ? [idConditions] : []),
+                  ],
               }
             : {};
 
@@ -140,8 +140,8 @@ export async function getPatientAppointments({ page, limit, search, id }: AllApp
                             gender: true,
                             img: true,
                             dateOfBirth: true,
-                            colorCode: true
-                        }
+                            colorCode: true,
+                        },
                     },
                     doctor: {
                         select: {
@@ -149,23 +149,23 @@ export async function getPatientAppointments({ page, limit, search, id }: AllApp
                             name: true,
                             specialization: true,
                             colorCode: true,
-                            img: true
-                        }
-                    }
+                            img: true,
+                        },
+                    },
                 },
-                orderBy: { appointmentDate: 'desc' }
+                orderBy: { appointmentDate: "desc" },
             }),
             db.appointment.count({
-                where: buildQuery(id, search)
-            })
+                where: buildQuery(id, search),
+            }),
         ]);
 
         if (!data) {
             return {
                 success: false,
-                message: 'Appointment data not found',
+                message: "Appointment data not found",
                 status: MAGIC_NUMBER_2,
-                data: null
+                data: null,
             };
         }
 
@@ -177,14 +177,14 @@ export async function getPatientAppointments({ page, limit, search, id }: AllApp
             totalPages,
             currentPage: PAGE_NUMBER,
             totalRecord,
-            status: MAGIC_NUMBER_2
+            status: MAGIC_NUMBER_2,
         };
     } catch (error) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_3
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_3,
         };
     }
 }
@@ -194,8 +194,8 @@ export async function getAppointmentWithMedicalRecordsById(id: number) {
         if (!id) {
             return {
                 success: false,
-                message: 'Appointment id does not exist.',
-                status: MAGIC_NUMBER_1
+                message: "Appointment id does not exist.",
+                status: MAGIC_NUMBER_1,
             };
         }
 
@@ -209,17 +209,17 @@ export async function getAppointmentWithMedicalRecordsById(id: number) {
                     include: {
                         diagnosis: true,
                         labTest: true,
-                        vitalSigns: true
-                    }
-                }
-            }
+                        vitalSigns: true,
+                    },
+                },
+            },
         });
 
         if (!data) {
             return {
                 success: false,
-                message: 'Appointment data not found',
-                status: MAGIC_NUMBER_2
+                message: "Appointment data not found",
+                status: MAGIC_NUMBER_2,
             };
         }
 
@@ -228,8 +228,8 @@ export async function getAppointmentWithMedicalRecordsById(id: number) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_3
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_3,
         };
     }
 }

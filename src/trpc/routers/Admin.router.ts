@@ -1,24 +1,24 @@
 const MAGIC_NUMBER_1 = 6;
 
-import { z } from 'zod';
+import { z } from "zod";
 
-import { addNewService, createNewDoctor, createNewStaff } from '@/actions/admin';
-import { deleteDataById } from '@/actions/general';
-import { DoctorSchema, ServicesSchema, StaffSchema, workingDaySchema } from '@/lib/schema';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/api/trpc';
-import { getAdminDashboardStats, getServices } from '@/utils/services/admin'; // Adjust the path as needed
+import { addNewService, createNewDoctor, createNewStaff } from "@/actions/admin";
+import { deleteDataById } from "@/actions/general";
+import { DoctorSchema, ServicesSchema, StaffSchema, workingDaySchema } from "@/lib/schema";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/api/trpc";
+import { getAdminDashboardStats, getServices } from "@/utils/services/admin"; // Adjust the path as needed
 
 const StaffInputSchema = StaffSchema;
 const ServiceInputSchema = ServicesSchema;
 const DoctorAuthSchema = DoctorSchema.extend({
-    password: z.string().min(MAGIC_NUMBER_1, 'Password should be at least MAGIC_NUMBER_1 characters long')
+    password: z.string().min(MAGIC_NUMBER_1, "Password should be at least MAGIC_NUMBER_1 characters long"),
 });
 const deleteInputSchema = z.object({
     id: z.string(),
-    deleteType: z.enum(['doctor', 'staff', 'patient', 'payment', 'bill'])
+    deleteType: z.enum(["doctor", "staff", "patient", "payment", "bill"]),
 });
 const CreateNewDoctorInputSchema = DoctorAuthSchema.extend({
-    workSchedule: z.array(workingDaySchema)
+    workSchedule: z.array(workingDaySchema),
 });
 
 export const adminRouter = createTRPCRouter({
@@ -35,7 +35,7 @@ export const adminRouter = createTRPCRouter({
 
         const result = await createNewStaff(input);
         if (!result.success) {
-            throw new Error(result.msg || 'Failed to add staff');
+            throw new Error(result.msg || "Failed to add staff");
         }
         return result;
     }),
@@ -46,7 +46,7 @@ export const adminRouter = createTRPCRouter({
 
         const result = await createNewDoctor(input as Parameters<typeof createNewDoctor>[0]);
         if (!result.success) {
-            throw new Error(result.message || 'Failed to add doctor');
+            throw new Error(result.message || "Failed to add doctor");
         }
         return result;
     }),
@@ -54,18 +54,18 @@ export const adminRouter = createTRPCRouter({
     addNewService: protectedProcedure.input(ServiceInputSchema).mutation(async ({ input }) => {
         const result = await addNewService(input);
         if (!result.success) {
-            throw new Error(result.msg || 'Failed to add service');
+            throw new Error(result.msg || "Failed to add service");
         }
         return result;
     }),
     deleteData: protectedProcedure.input(deleteInputSchema).mutation(async ({ input, ctx }) => {
         // Check admin role, assuming ctx.user exists:
-        if (ctx.user?.role !== 'ADMIN') {
-            throw new Error('Unauthorized');
+        if (ctx.user?.role !== "ADMIN") {
+            throw new Error("Unauthorized");
         }
 
         const { id, deleteType } = input;
 
         return await deleteDataById(id, deleteType);
-    })
+    }),
 });

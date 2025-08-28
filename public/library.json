@@ -1,0 +1,167 @@
+{
+	"root": false,
+	"$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on",
+				"recommended": true
+			}
+		},
+		"enabled": true
+	},
+	"css": {
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 2,
+			"lineEnding": "lf",
+			"lineWidth": 80
+		},
+		"linter": {
+			"enabled": true
+		}
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"includes": [
+			"**",
+			"!**/.codesandbox",
+			"!**/dist",
+			"!**/node_modules",
+			"!**/.next",
+			"!public",
+			"!bun.lock",
+			"!**/generated"
+		]
+	},
+	"formatter": {
+		"attributePosition": "auto",
+		"bracketSpacing": true,
+		"enabled": true,
+		"formatWithErrors": true,
+		"indentStyle": "space",
+		"indentWidth": 4,
+		"lineEnding": "lf",
+		"lineWidth": 120,
+		"useEditorconfig": true
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded",
+			"attributePosition": "multiline",
+			"bracketSameLine": false,
+			"bracketSpacing": true,
+			"enabled": true,
+			"jsxQuoteStyle": "single",
+			"quoteProperties": "asNeeded",
+			"quoteStyle": "single",
+			"semicolons": "always",
+			"trailingCommas": "none"
+		},
+		"globals": ["React"]
+	},
+	"linter": {
+		"domains": {
+			"next": "all",
+			"react": "all",
+			"test": "recommended"
+		},
+		"enabled": true,
+		"rules": {
+			"a11y": {
+				"noAutofocus": "off",
+				"noStaticElementInteractions": "off",
+				"recommended": true
+			},
+			"complexity": {
+				"useLiteralKeys": "off",
+				"noExcessiveCognitiveComplexity": {
+					"level": "warn",
+					"options": {
+						"maxAllowedComplexity": 50
+					}
+				},
+				"noVoid": "off",
+				"recommended": true
+			},
+			"correctness": {
+				"noUndeclaredDependencies": "off",
+				"noUndeclaredVariables": "off",
+				"noUnusedFunctionParameters": "warn",
+				"noUnusedImports": "warn",
+				"noUnusedVariables": "warn",
+				"recommended": true
+			},
+			"nursery": {
+				"noShadow": "off",
+				"noUselessUndefined": "off",
+				"useSortedClasses": {
+					"fix": "safe",
+					"level": "warn",
+					"options": {
+						"functions": ["clsx", "cva", "cn"]
+					}
+				}
+			},
+			"performance": {
+				"noAwaitInLoops": "off",
+				"noNamespaceImport": "off",
+				"recommended": true
+			},
+			"recommended": true,
+			"security": {
+				"recommended": true
+			},
+			"style": {
+				"noInferrableTypes": "error",
+				"noNestedTernary": "off",
+				"noParameterAssign": "error",
+				"noParameterProperties": "off",
+				"noUnusedTemplateLiteral": "error",
+				"noUselessElse": "error",
+				"useAsConstAssertion": "error",
+				"useBlockStatements": "off",
+				"useDefaultParameterLast": "error",
+				"useEnumInitializers": "error",
+				"useFilenamingConvention": "off",
+				"useNumberNamespace": "error",
+				"useSelfClosingElements": "error",
+				"useSingleVarDeclarator": "error"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "off",
+				"noConsole": {
+					"level": "warn",
+					"options": {
+						"allow": [
+							"assert",
+							"error",
+							"info",
+							"warn",
+							"log",
+							"debug",
+							"time",
+							"timeEnd",
+							"trace"
+						]
+					}
+				},
+				"noDocumentCookie": "off",
+				"noEmptyBlockStatements": "off",
+				"noEvolvingTypes": "off",
+				"noFallthroughSwitchClause": "error",
+				"noImplicitAnyLet": "off",
+				"noReactSpecificProps": "off",
+				"noUnknownAtRules": "off",
+				"recommended": true,
+				"useAwait": "off"
+			}
+		}
+	},
+	"vcs": {
+		"clientKind": "git",
+		"enabled": true,
+		"useIgnoreFile": true
+	}
+}

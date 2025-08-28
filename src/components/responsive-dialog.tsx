@@ -1,6 +1,6 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type ResponsiveDialogProps = {
     title: string;
@@ -24,7 +24,7 @@ export const ResponsiveDialog = ({ title, description, children, open, onOpenCha
                         <DrawerTitle>{title}</DrawerTitle>
                         <DrawerDescription>{description}</DrawerDescription>
                     </DrawerHeader>
-                    <div className='p-4'>{children}</div>
+                    <div className="p-4">{children}</div>
                 </DrawerContent>
             </Drawer>
         );

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { authClient, useRole } from '@/lib/auth/auth-client'; // your client session hook wrapper
-import { DashboardContent } from './_components/dashboard-content';
-import { DashboardSkeleton } from './_components/dashboard-skeleton';
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { authClient, useRole } from "@/lib/auth/auth-client"; // your client session hook wrapper
+import { DashboardContent } from "./_components/dashboard-content";
+import { DashboardSkeleton } from "./_components/dashboard-skeleton";
 
 export default function DashboardPage() {
     const router = useRouter();
@@ -15,7 +15,7 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (!(loading || (session && userRole))) {
-            router.push('/signin');
+            router.push("/signin");
         }
     }, [loading, session, userRole, router]);
 
@@ -32,7 +32,7 @@ export default function DashboardPage() {
         <DashboardContent
             session={session?.session}
             user={session?.user ?? null}
-            userRole={userRole ?? ''}
+            userRole={userRole ?? ""}
         />
     );
 }

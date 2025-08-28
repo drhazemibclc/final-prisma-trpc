@@ -1,10 +1,10 @@
 // src/lib/auth/use-auth.ts
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
-import { useSession } from '@/lib/auth/auth-client';
-import { type User, UserRole } from '@/types';
+import { useSession } from "@/lib/auth/auth-client";
+import { type User, UserRole } from "@/types";
 
-import { getSession, type Session } from '../lib/auth';
+import { getSession, type Session } from "../lib/auth";
 
 export interface AuthUser {
     twoFactorEnabled: boolean | null;
@@ -46,12 +46,12 @@ function normalizeUser(user: unknown): AuthUser {
         lastName: u.lastName ?? null,
         createdAt: new Date(u.createdAt),
         updatedAt: new Date(u.updatedAt),
-        id: '',
+        id: "",
         session: null,
         twoFactorEnabled: false,
-        name: '',
-        email: '',
-        emailVerified: false
+        name: "",
+        email: "",
+        emailVerified: false,
     };
 }
 
@@ -59,7 +59,7 @@ function normalizeUser(user: unknown): AuthUser {
  * Custom hook to manage and expose user session state.
  */
 export function useAuth() {
-    const [status, setStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
+    const [status, setStatus] = useState<"loading" | "authenticated" | "unauthenticated">("loading");
     const [user, setUser] = useState<AuthUser | null>(null);
     const [error, setError] = useState<Error | null>(null);
 
@@ -68,18 +68,18 @@ export function useAuth() {
             const session: Session | null = await getSession();
             if (session?.user) {
                 setUser(normalizeUser(session.user));
-                setStatus('authenticated');
+                setStatus("authenticated");
                 setError(null);
             } else {
                 setUser(null);
-                setStatus('unauthenticated');
+                setStatus("unauthenticated");
                 setError(null);
             }
         } catch (err) {
-            console.error('Failed to retrieve session:', err);
+            console.error("Failed to retrieve session:", err);
             setUser(null);
-            setStatus('unauthenticated');
-            setError(err instanceof Error ? err : new Error('Unknown error during authentication.'));
+            setStatus("unauthenticated");
+            setError(err instanceof Error ? err : new Error("Unknown error during authentication."));
         }
     }, []);
 
@@ -98,9 +98,9 @@ export function useUser() {
 
     return {
         user,
-        isLoading: status === 'loading',
-        isAuthenticated: status === 'authenticated',
-        error
+        isLoading: status === "loading",
+        isAuthenticated: status === "authenticated",
+        error,
     };
 }
 
@@ -119,7 +119,7 @@ export function useCurrentUser(): User | null {
         isEmailVerified: betterAuthUser.emailVerified,
         createdAt: betterAuthUser.createdAt,
         updatedAt: betterAuthUser.updatedAt,
-        avatar: betterAuthUser.image || undefined
+        avatar: betterAuthUser.image || undefined,
     } as User;
 }
 
@@ -133,6 +133,6 @@ export function useUserRole() {
         isDoctor: user?.role === UserRole.DOCTOR,
         isAdmin: user?.role === UserRole.ADMIN,
         isStaff: user?.role === UserRole.STAFF,
-        isAuthenticated: !!user
+        isAuthenticated: !!user,
     };
 }

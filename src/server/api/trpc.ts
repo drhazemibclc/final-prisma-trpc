@@ -1,11 +1,11 @@
-import { experimental_createServerActionHandler } from '@trpc/next/app-dir/server';
-import { initTRPC, TRPCError } from '@trpc/server';
-import { cookies, headers } from 'next/headers';
-import { ZodError } from 'zod';
-import { getSession } from '@/lib/auth';
-import { transformer } from '@/trpc/shared';
-import { prisma } from '../db';
-import type { Context } from './context';
+import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
+import { initTRPC, TRPCError } from "@trpc/server";
+import { cookies, headers } from "next/headers";
+import { ZodError } from "zod";
+import { getSession } from "@/lib/auth";
+import { transformer } from "@/trpc/shared";
+import { prisma } from "../db";
+import type { Context } from "./context";
 
 const t = initTRPC.context<Context>().create({
     transformer,
@@ -15,10 +15,11 @@ const t = initTRPC.context<Context>().create({
             ...shape,
             data: {
                 ...shape.data,
-                zodError: error.code === 'BAD_REQUEST' && error.cause instanceof ZodError ? error.cause.flatten() : null
-            }
+                zodError:
+                    error.code === "BAD_REQUEST" && error.cause instanceof ZodError ? error.cause.flatten() : null,
+            },
         };
-    }
+    },
 });
 
 /**
@@ -35,7 +36,7 @@ export const protectedProcedure = publicProcedure.use(opts => {
 
     if (!session?.user) {
         throw new TRPCError({
-            code: 'UNAUTHORIZED'
+            code: "UNAUTHORIZED",
         });
     }
 
@@ -43,7 +44,7 @@ export const protectedProcedure = publicProcedure.use(opts => {
 });
 export const createAction = experimental_createServerActionHandler(t, {
     async createContext() {
-        const req = new Request(''); // dummy req if needed for compatibility
+        const req = new Request(""); // dummy req if needed for compatibility
 
         const hdrs = await headers();
         const ckies = await cookies();
@@ -56,7 +57,7 @@ export const createAction = experimental_createServerActionHandler(t, {
             user: session?.user ?? null,
             req,
             headers: hdrs,
-            cookies: ckies
+            cookies: ckies,
         };
-    }
+    },
 });

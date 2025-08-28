@@ -2,12 +2,12 @@ const MAGIC_NUMBER_1 = 10;
 const MAGIC_NUMBER_2 = 200;
 const MAGIC_NUMBER_3 = 500;
 
-import { db } from '@/server/db';
+import { db } from "@/server/db";
 
 export async function getAllStaff({
     page,
     limit,
-    search
+    search,
 }: {
     page: number | string;
     limit?: number | string;
@@ -23,16 +23,16 @@ export async function getAllStaff({
             db.staff.findMany({
                 where: {
                     OR: [
-                        { name: { contains: search, mode: 'insensitive' } },
-                        { phone: { contains: search, mode: 'insensitive' } },
-                        { email: { contains: search, mode: 'insensitive' } }
-                    ]
+                        { name: { contains: search, mode: "insensitive" } },
+                        { phone: { contains: search, mode: "insensitive" } },
+                        { email: { contains: search, mode: "insensitive" } },
+                    ],
                 },
 
                 skip: SKIP,
-                take: LIMIT
+                take: LIMIT,
             }),
-            db.staff.count()
+            db.staff.count(),
         ]);
 
         const totalPages = Math.ceil(totalRecords / LIMIT);
@@ -43,14 +43,14 @@ export async function getAllStaff({
             totalRecords,
             totalPages,
             currentPage: PAGE_NUMBER,
-            status: MAGIC_NUMBER_2
+            status: MAGIC_NUMBER_2,
         };
     } catch (error) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_3
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_3,
         };
     }
 }

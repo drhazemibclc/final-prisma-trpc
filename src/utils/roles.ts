@@ -1,9 +1,9 @@
 // Assuming Session type is also exported from '@/lib/auth'
 
-import { getSession, type Session } from '@/lib/auth';
+import { getSession, type Session } from "@/lib/auth";
 
 // This ensures that only valid role strings are used.
-export type UserRoles = 'ADMIN' | 'PATIENT' | 'STAFF' | 'DOCTOR';
+export type UserRoles = "ADMIN" | "PATIENT" | "STAFF" | "DOCTOR";
 
 export const checkRole = async (session: Session | null, roleToCheck: UserRoles) => {
     // No need to call getSession() again here, as 'session' is passed as an argument.
@@ -16,7 +16,7 @@ export const checkRole = async (session: Session | null, roleToCheck: UserRoles)
 export const getRole = async (): Promise<UserRoles> => {
     const session = await getSession();
 
-    const role = (session?.user?.role?.toLowerCase() as UserRoles) ?? 'patient';
+    const role = (session?.user?.role?.toLowerCase() as UserRoles) ?? "patient";
 
     return role;
 };

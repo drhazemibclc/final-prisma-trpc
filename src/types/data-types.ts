@@ -1,5 +1,5 @@
-import type { AppointmentStatus, Doctor, Patient } from '@prisma/client';
-import type z from 'zod';
+import type { AppointmentStatus, Doctor, Patient } from "@prisma/client";
+import type z from "zod";
 
 import type {
     AppointmentSchema,
@@ -12,8 +12,8 @@ import type {
     ServicesSchema,
     StaffSchema,
     VitalSignsSchema,
-    WorkingDaysSchema
-} from '@/lib/schema';
+    WorkingDaysSchema,
+} from "@/lib/schema";
 
 export type AppointmentsChartProps = {
     name: string;
@@ -87,4 +87,4 @@ export type ServicesInput = z.infer<typeof ServicesSchema>;
 // Resulting input type
 export type DoctorAuthInput = z.infer<typeof DoctorAuthSchema>;
 
-export type Weekday = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday';
+export type Weekday = "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";

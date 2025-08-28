@@ -1,12 +1,12 @@
-import { cache } from 'react';
-import { getSession } from '.';
+import { cache } from "react";
+import { getSession } from ".";
 
 // Cache session for the duration of the request
 export const getCachedSession = cache(async () => {
     try {
         return await getSession();
     } catch (error) {
-        console.error('Failed to get session:', error);
+        console.error("Failed to get session:", error);
         return null;
     }
 });

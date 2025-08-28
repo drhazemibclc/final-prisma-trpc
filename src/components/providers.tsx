@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { httpBatchLink } from '@trpc/client';
-import SuperJSON from 'superjson';
-import { trpc } from '@/trpc/client';
-import { ThemeProvider } from './theme-provider';
-import { Toaster } from './ui/sonner';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { httpBatchLink } from "@trpc/client";
+import SuperJSON from "superjson";
+import { trpc } from "@/trpc/client";
+import { ThemeProvider } from "./theme-provider";
+import { Toaster } from "./ui/sonner";
 
 const queryClient = new QueryClient();
 
@@ -14,17 +14,17 @@ const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
     links: [
         httpBatchLink({
-            url: '/api/trpc',
-            transformer: SuperJSON 
-        })
-    ]
+            url: "/api/trpc",
+            transformer: SuperJSON,
+        }),
+    ],
 });
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     return (
         <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
+            attribute="class"
+            defaultTheme="system"
             disableTransitionOnChange
             enableSystem
         >

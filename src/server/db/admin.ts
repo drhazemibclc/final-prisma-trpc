@@ -1,44 +1,44 @@
 // prisma/seed.ts or scripts/seed.ts
-import 'dotenv/config';
+import "dotenv/config";
 
-import { faker } from '@faker-js/faker'; // Import faker for generating dummy data
-import { JOBTYPE, PrismaClient, Role } from '@prisma/client';
+import { faker } from "@faker-js/faker"; // Import faker for generating dummy data
+import { JOBTYPE, PrismaClient, Role } from "@prisma/client";
 
 const db = new PrismaClient();
 
-import { auth } from '@/lib/auth'; // Your authentication library
+import { auth } from "@/lib/auth"; // Your authentication library
 
 async function seed() {
-    console.log('Starting seed process...');
+    console.log("Starting seed process...");
 
     try {
         // --- Clear Data in Reverse Order of Dependencies (Cascading Deletes if configured) ---
         // Corrected model names based on typical Prisma singular PascalCase naming
-        console.log('Clearing existing data...');
+        console.log("Clearing existing data...");
 
         // Clear User table last if Patient, Doctor, Staff depend on it
         await db.doctor.deleteMany();
         await db.user.deleteMany();
-        console.log('Existing data cleared.');
+        console.log("Existing data cleared.");
 
         // --- Create Admin User (Hazem Ali) ---
-        const adminEmail = process.env['ADMIN_EMAIL'] || 'clinysmar@gmail.com';
-        const adminPassword = process.env['ADMIN_PASSWORD'] || 'Health24';
-        const adminName = process.env['ADMIN_NAME'] || 'Hazem Ali';
-        const adminPhone = '01003497579';
+        const adminEmail = process.env["ADMIN_EMAIL"] || "clinysmar@gmail.com";
+        const adminPassword = process.env["ADMIN_PASSWORD"] || "Health24";
+        const adminName = process.env["ADMIN_NAME"] || "Hazem Ali";
+        const adminPhone = "01003497579";
         console.log(`Attempting to create admin user: ${adminName} (${adminEmail})...`);
 
         const adminAuthSignUpResult = await auth.api.signUpEmail({
             body: {
                 email: adminEmail,
                 password: adminPassword,
-                name: adminName
-            }
+                name: adminName,
+            },
         });
 
         if (!adminAuthSignUpResult?.user?.id) {
-            console.error('Failed to create admin user via authentication service. Result:', adminAuthSignUpResult);
-            throw new Error('Failed to create admin user. Check auth service configuration and response.');
+            console.error("Failed to create admin user via authentication service. Result:", adminAuthSignUpResult);
+            throw new Error("Failed to create admin user. Check auth service configuration and response.");
         }
 
         const { id: adminUserId, email: adminUserEmail } = adminAuthSignUpResult.user;
@@ -47,7 +47,7 @@ async function seed() {
         // Update Prisma User role to ADMIN
         await db.user.update({
             where: { id: adminUserId },
-            data: { role: Role.ADMIN }
+            data: { role: Role.ADMIN },
         });
         console.log(`Admin user ${adminUserId} role updated to ADMIN in Prisma.`);
 
@@ -60,16 +60,16 @@ async function seed() {
                 user: { connect: { id: adminUserId } },
                 email: adminEmail, // Use admin email
                 name: adminName, // Use admin name
-                specialization: 'Pediatrician', // Specific specialization for Hazem
-                licenseNumber: 'HAZEM12345', // Unique license number
+                specialization: "Pediatrician", // Specific specialization for Hazem
+                licenseNumber: "HAZEM12345", // Unique license number
                 phone: adminPhone,
                 address: faker.location.streetAddress(),
-                department: 'Pediatrics',
+                department: "Pediatrics",
                 img: faker.image.avatar(),
                 colorCode: faker.color.rgb(),
-                availabilityStatus: 'Available',
-                type: JOBTYPE.FULL // Example specific job type
-            }
+                availabilityStatus: "Available",
+                type: JOBTYPE.FULL, // Example specific job type
+            },
         });
         console.log(`Created Doctor profile for Hazem Ali (ID: ${hazemDoctor.id}).`);
 
@@ -78,15 +78,15 @@ async function seed() {
         // For simplicity, if he's primarily an admin who is also a doctor:
         await db.user.update({
             where: { id: adminUserId },
-            data: { role: Role.DOCTOR } // If DOCTOR overrides ADMIN, or you have a combined role
+            data: { role: Role.DOCTOR }, // If DOCTOR overrides ADMIN, or you have a combined role
         });
         console.log(`Admin user ${adminUserId} role updated to DOCTOR in Prisma (if applicable).`);
     } catch (error) {
-        console.error('Seed process failed:', error);
+        console.error("Seed process failed:", error);
         process.exit(1); // Exit with an error code
     } finally {
         await db.$disconnect();
-        console.log('Seed process finished.');
+        console.log("Seed process finished.");
     }
 }
 

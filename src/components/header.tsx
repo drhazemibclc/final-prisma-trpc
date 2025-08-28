@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ModeToggle } from './mode-toggle';
-import UserMenu from './user-menu';
+import Link from "next/link";
+import { ModeToggle } from "./mode-toggle";
+import UserMenu from "./user-menu";
 
 export default function Header() {
     const links = [
-        { to: '/', label: 'Home' },
-        { to: '/dashboard', label: 'Dashboard' }
+        { to: "/", label: "Home" },
+        { to: "/dashboard", label: "Dashboard" },
     ] as const;
 
     return (
         <div>
-            <div className='flex flex-row items-center justify-between px-2 py-1'>
-                <nav className='flex gap-4 text-lg'>
+            <div className="flex flex-row items-center justify-between px-2 py-1">
+                <nav className="flex gap-4 text-lg">
                     {links.map(({ to, label }) => {
                         return (
                             <Link
@@ -25,7 +25,7 @@ export default function Header() {
                         );
                     })}
                 </nav>
-                <div className='gapMAGIC_NUMBER_1 flex items-center'>
+                <div className="gapMAGIC_NUMBER_1 flex items-center">
                     <ModeToggle />
                     <UserMenu />
                 </div>

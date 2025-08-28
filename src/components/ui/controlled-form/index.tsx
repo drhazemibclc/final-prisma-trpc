@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import type { ComponentProps } from 'react';
-import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import type { ComponentProps } from "react";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
 
-import { Form as SCN_Form } from '@/components/ui/form';
-import { cn } from '@/lib/utils';
+import { Form as SCN_Form } from "@/components/ui/form";
+import { cn } from "@/lib/utils";
 
-type TForm<TFormSchema extends FieldValues> = ComponentProps<'form'> & {
+type TForm<TFormSchema extends FieldValues> = ComponentProps<"form"> & {
     form: UseFormReturn<TFormSchema>;
     onValidForm?: (values: TFormSchema) => void;
     onInvalidForm?: () => void;
@@ -25,7 +25,7 @@ export default function Form<TFormSchema extends FieldValues>({
     return (
         <SCN_Form {...form}>
             <form
-                className={cn('flex flex-col space-y-5', className)}
+                className={cn("flex flex-col space-y-5", className)}
                 onSubmit={onValidForm ? handleSubmit(onValidForm, onInvalidForm) : undefined}
                 {...otherProperties}
             >

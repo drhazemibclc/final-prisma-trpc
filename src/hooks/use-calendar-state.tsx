@@ -1,10 +1,10 @@
 // src/hooks/use-calendar-state.tsx
-'use client';
+"use client";
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from "react";
 
 // Define the possible calendar views
-export type CalendarView = 'day' | 'week' | 'month' | 'agenda';
+export type CalendarView = "day" | "week" | "month" | "agenda";
 
 interface CalendarState {
     currentDate: Date; // The currently selected or focused date
@@ -22,7 +22,7 @@ interface CalendarState {
  * A custom hook to manage the state of a calendar component.
  * Provides functions for date navigation and view changes.
  */
-export function useCalendarState(initialDate?: Date, initialView: CalendarView = 'month'): CalendarState {
+export function useCalendarState(initialDate?: Date, initialView: CalendarView = "month"): CalendarState {
     // currentDate and its actual setter from useState
     const [currentDate, _setCurrentDate] = useState<Date>(initialDate || new Date());
     const [view, setView] = useState<CalendarView>(initialView);
@@ -49,14 +49,14 @@ export function useCalendarState(initialDate?: Date, initialView: CalendarView =
             // `prevDate` is correctly typed as `Date` by TypeScript here
             const newDate = new Date(prevDate);
             switch (view) {
-                case 'day':
-                case 'agenda':
+                case "day":
+                case "agenda":
                     newDate.setDate(newDate.getDate() + 1);
                     break;
-                case 'week':
+                case "week":
                     newDate.setDate(newDate.getDate() + 7);
                     break;
-                case 'month':
+                case "month":
                     newDate.setMonth(newDate.getMonth() + 1);
                     break;
             }
@@ -70,14 +70,14 @@ export function useCalendarState(initialDate?: Date, initialView: CalendarView =
             // `prevDate` is correctly typed as `Date` by TypeScript here
             const newDate = new Date(prevDate);
             switch (view) {
-                case 'day':
-                case 'agenda':
+                case "day":
+                case "agenda":
                     newDate.setDate(newDate.getDate() - 1);
                     break;
-                case 'week':
+                case "week":
                     newDate.setDate(newDate.getDate() - 7);
                     break;
-                case 'month':
+                case "month":
                     newDate.setMonth(newDate.getMonth() - 1);
                     break;
             }
@@ -89,8 +89,8 @@ export function useCalendarState(initialDate?: Date, initialView: CalendarView =
         setCurrentDate(new Date()); // This uses our custom `setCurrentDate` which then calls `_setCurrentDate`
     }, [setCurrentDate]); // Dependency for useCallback
 
-    const isWeekView = useMemo(() => view === 'week', [view]);
-    const isDayView = useMemo(() => view === 'day' || view === 'agenda', [view]);
+    const isWeekView = useMemo(() => view === "week", [view]);
+    const isDayView = useMemo(() => view === "day" || view === "agenda", [view]);
 
     return {
         currentDate,
@@ -101,6 +101,6 @@ export function useCalendarState(initialDate?: Date, initialView: CalendarView =
         goToPrevious,
         goToToday,
         isWeekView,
-        isDayView
+        isDayView,
     };
 }

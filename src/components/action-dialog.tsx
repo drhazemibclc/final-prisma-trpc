@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { Trash2Icon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { FaQuestion } from 'react-icons/fa6';
-import { toast } from 'sonner';
+import { Trash2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FaQuestion } from "react-icons/fa6";
+import { toast } from "sonner";
 
-import { trpc } from '@/trpc/client'; // CORRECT: Import `trpc` from the client-side tRPC utility
+import { trpc } from "@/trpc/client"; // CORRECT: Import `trpc` from the client-side tRPC utility
 
-import { ProfileImage } from './profile-image';
-import { SmallCard } from './small-card';
-import { Button } from './ui/button';
-import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog';
+import { ProfileImage } from "./profile-image";
+import { SmallCard } from "./small-card";
+import { Button } from "./ui/button";
+import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 
 type ActionDialogProps = {
-    type: 'doctor' | 'staff' | 'delete';
+    type: "doctor" | "staff" | "delete";
     id: string;
     data?: {
         img?: string | null;
@@ -27,7 +27,7 @@ type ActionDialogProps = {
         department?: string | null;
         licenseNumber?: string | null;
     };
-    deleteType?: 'doctor' | 'staff' | 'patient' | 'payment' | 'bill';
+    deleteType?: "doctor" | "staff" | "patient" | "payment" | "bill";
 };
 
 export const ActionDialog = ({ id, data, type, deleteType }: ActionDialogProps) => {
@@ -38,19 +38,19 @@ export const ActionDialog = ({ id, data, type, deleteType }: ActionDialogProps) 
     // The `trpc` object is the client-side instance created by tRPC.
     const deleteMutation = trpc.admin.deleteData.useMutation({
         onSuccess: () => {
-            toast.success('Record deleted successfully');
+            toast.success("Record deleted successfully");
             setOpen(false);
             router.refresh();
         },
         onError: error => {
-            console.error('Failed to delete record:', error);
-            toast.error('Failed to delete record');
-        }
+            console.error("Failed to delete record:", error);
+            toast.error("Failed to delete record");
+        },
     });
 
     const handleDelete = () => {
         if (!deleteType) {
-            toast.error('Delete type is not specified');
+            toast.error("Delete type is not specified");
             return;
         }
 
@@ -58,7 +58,7 @@ export const ActionDialog = ({ id, data, type, deleteType }: ActionDialogProps) 
         deleteMutation.mutate({ id, deleteType });
     };
 
-    if (type === 'delete') {
+    if (type === "delete") {
         return (
             <Dialog
                 onOpenChange={setOpen}
@@ -66,48 +66,48 @@ export const ActionDialog = ({ id, data, type, deleteType }: ActionDialogProps) 
             >
                 <DialogTrigger asChild>
                     <Button
-                        className='flex items-center justify-center rounded-full text-red-500'
-                        variant={'outline'}
+                        className="flex items-center justify-center rounded-full text-red-500"
+                        variant={"outline"}
                     >
                         <Trash2Icon
-                            className='text-red-500'
+                            className="text-red-500"
                             size={16}
                         />
-                        {deleteType === 'patient' && 'Delete'}
+                        {deleteType === "patient" && "Delete"}
                     </Button>
                 </DialogTrigger>
 
                 <DialogContent>
-                    <div className='flex flex-col items-center justify-center py-6'>
+                    <div className="flex flex-col items-center justify-center py-6">
                         <DialogTitle>
-                            <div className='mb-2 rounded-full bg-red-200 p-4'>
+                            <div className="mb-2 rounded-full bg-red-200 p-4">
                                 <FaQuestion
-                                    className='text-red-500'
+                                    className="text-red-500"
                                     size={50}
                                 />
                             </div>
                         </DialogTitle>
 
-                        <span className='text-black text-xl'>Delete Confirmation</span>
-                        <p className='text-sm'>Are you sure you want to delete the selected record?</p>
+                        <span className="text-black text-xl">Delete Confirmation</span>
+                        <p className="text-sm">Are you sure you want to delete the selected record?</p>
 
-                        <div className='mt-6 flex items-center justify-center gap-x-3'>
+                        <div className="mt-6 flex items-center justify-center gap-x-3">
                             <DialogClose asChild>
                                 <Button
-                                    className='px-4 py-2'
-                                    variant={'outline'}
+                                    className="px-4 py-2"
+                                    variant={"outline"}
                                 >
                                     Cancel
                                 </Button>
                             </DialogClose>
 
                             <Button
-                                className='bg-destructive px-4 py-2 font-medium text-sm text-white hover:bg-destructive hover:text-white'
+                                className="bg-destructive px-4 py-2 font-medium text-sm text-white hover:bg-destructive hover:text-white"
                                 disabled={deleteMutation.isPending}
                                 onClick={handleDelete}
-                                variant='outline'
+                                variant="outline"
                             >
-                                {deleteMutation.isPending ? 'Deleting...' : 'Yes. Delete'}
+                                {deleteMutation.isPending ? "Deleting..." : "Yes. Delete"}
                             </Button>
                         </div>
                     </div>
@@ -116,72 +116,72 @@ export const ActionDialog = ({ id, data, type, deleteType }: ActionDialogProps) 
         );
     }
 
-    if (type === 'staff') {
+    if (type === "staff") {
         return (
             <Dialog>
                 <DialogTrigger asChild>
                     <Button
-                        className='flex items-center justify-center rounded-full text-blue-600 text-blue-600/10 hover:underline'
-                        variant={'outline'}
+                        className="flex items-center justify-center rounded-full text-blue-600 text-blue-600/10 hover:underline"
+                        variant={"outline"}
                     >
                         View
                     </Button>
                 </DialogTrigger>
 
-                <DialogContent className='max-h-[90%] max-w-[300px] overflow-y-auto p-8 md:max-w-2xl'>
-                    <DialogTitle className='mb-4 font-semibold text-gray-600 text-lg'>Staff Information</DialogTitle>
+                <DialogContent className="max-h-[90%] max-w-[300px] overflow-y-auto p-8 md:max-w-2xl">
+                    <DialogTitle className="mb-4 font-semibold text-gray-600 text-lg">Staff Information</DialogTitle>
 
-                    <div className='flex justify-between'>
-                        <div className='flex items-center gap-3'>
+                    <div className="flex justify-between">
+                        <div className="flex items-center gap-3">
                             <ProfileImage
-                                bgColor={data?.colorCode ?? '0000'}
-                                className='xl:size-20'
-                                name={data?.name ?? ''}
-                                textClassName='xl:text-2xl'
-                                url={data?.img ?? ''}
+                                bgColor={data?.colorCode ?? "0000"}
+                                className="xl:size-20"
+                                name={data?.name ?? ""}
+                                textClassName="xl:text-2xl"
+                                url={data?.img ?? ""}
                             />
 
-                            <div className='flex flex-col'>
-                                <p className='font-semibold text-xl'>{data?.name}</p>
-                                <span className='text-gray-600 text-sm capitalize md:text-base'>
+                            <div className="flex flex-col">
+                                <p className="font-semibold text-xl">{data?.name}</p>
+                                <span className="text-gray-600 text-sm capitalize md:text-base">
                                     {data?.role?.toLowerCase()}
                                 </span>
-                                <span className='text-blue-500 text-sm'>Full-Time</span>
+                                <span className="text-blue-500 text-sm">Full-Time</span>
                             </div>
                         </div>
                     </div>
 
-                    <div className='mt-10 space-y-6'>
-                        <div className='flex flex-col gap-y-4 md:flex-row md:flex-wrap md:items-center md:gap-x-0 xl:justify-between'>
+                    <div className="mt-10 space-y-6">
+                        <div className="flex flex-col gap-y-4 md:flex-row md:flex-wrap md:items-center md:gap-x-0 xl:justify-between">
                             <SmallCard
-                                label='Email Address'
-                                value={data?.email ?? 'N/A'}
+                                label="Email Address"
+                                value={data?.email ?? "N/A"}
                             />
                             <SmallCard
-                                label='Phone Number'
-                                value={data?.phone ?? 'N/A'}
+                                label="Phone Number"
+                                value={data?.phone ?? "N/A"}
                             />
                         </div>
 
                         <div>
                             <SmallCard
-                                label='Address'
-                                value={data?.address || 'N/A'}
+                                label="Address"
+                                value={data?.address || "N/A"}
                             />
                         </div>
 
-                        <div className='flex flex-col gap-y-4 md:flex-row md:flex-wrap md:items-center md:gap-x-0 xl:justify-between'>
+                        <div className="flex flex-col gap-y-4 md:flex-row md:flex-wrap md:items-center md:gap-x-0 xl:justify-between">
                             <SmallCard
-                                label='Role'
-                                value={data?.role ?? 'N/A'}
+                                label="Role"
+                                value={data?.role ?? "N/A"}
                             />
                             <SmallCard
-                                label='Department'
-                                value={data?.department || 'N/A'}
+                                label="Department"
+                                value={data?.department || "N/A"}
                             />
                             <SmallCard
-                                label='License Number'
-                                value={data?.licenseNumber || 'N/A'}
+                                label="License Number"
+                                value={data?.licenseNumber || "N/A"}
                             />
                         </div>
                     </div>

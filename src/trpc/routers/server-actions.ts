@@ -1,7 +1,7 @@
-'use server';
+"use server";
 
-import { z } from 'zod';
-import { createAction, publicProcedure } from '@/server/api/trpc';
+import { z } from "zod";
+import { createAction, publicProcedure } from "@/server/api/trpc";
 
 /**
  * Either inline procedures using trpc's flexible
@@ -13,14 +13,14 @@ export const testAction = createAction(
     publicProcedure
         .input(
             z.object({
-                text: z.string().min(1)
+                text: z.string().min(1),
             })
         )
         .mutation(async opts => {
-            console.log('testMutation called', opts);
+            console.log("testMutation called", opts);
             return {
-                text: 'Hello world',
-                date: new Date()
+                text: "Hello world",
+                date: new Date(),
             };
         })
 );

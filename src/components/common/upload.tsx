@@ -1,9 +1,9 @@
 // src/components/ui/minio-upload-button.tsx
-'use client';
+"use client";
 
-import * as React from 'react';
-import { getPresignedUrl, uploadToMinio } from '@/lib/minio';
-import { Button } from '../ui/button';
+import * as React from "react";
+import { getPresignedUrl, uploadToMinio } from "@/lib/minio";
+import { Button } from "../ui/button";
 
 type Props = {
     onUploadCompleteAction?: (url: string) => void; // rename
@@ -22,7 +22,7 @@ export const UploadButton: React.FC<Props> = ({ onUploadCompleteAction, children
             setLoading(true);
             const { url, key } = await getPresignedUrl(file.name, file.type);
             await uploadToMinio(file, url);
-            const fileUrl = `${process.env['NEXT_PUBLIC_MINIO_BASE_URL']}/${key}`;
+            const fileUrl = `${process.env["NEXT_PUBLIC_MINIO_BASE_URL"]}/${key}`;
             onUploadCompleteAction?.(fileUrl);
         } catch (err) {
             console.error(err);
@@ -34,11 +34,11 @@ export const UploadButton: React.FC<Props> = ({ onUploadCompleteAction, children
     return (
         <label className={className}>
             <input
-                type='file'
-                className='hidden'
+                type="file"
+                className="hidden"
                 onChange={handleUpload}
             />
-            <Button disabled={loading}>{loading ? 'Uploading...' : (children ?? 'Upload')}</Button>
+            <Button disabled={loading}>{loading ? "Uploading..." : (children ?? "Upload")}</Button>
         </label>
     );
 };

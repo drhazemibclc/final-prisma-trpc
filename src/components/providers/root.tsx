@@ -1,8 +1,8 @@
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from "react";
 
-import { AuthProvider } from '@/components/providers/auth-provider';
-import ThemeProvider from '@/components/providers/theme-provider';
-import { TRPCProvider } from '@/components/providers/trpc-provider';
+import { AuthProvider } from "@/components/providers/auth-provider";
+import ThemeProvider from "@/components/providers/theme-provider";
+import { TRPCProvider } from "@/components/providers/trpc-provider";
 
 type TRootProvider = PropsWithChildren;
 

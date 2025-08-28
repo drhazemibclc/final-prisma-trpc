@@ -1,11 +1,11 @@
-import 'server-only';
-import { dehydrate, HydrationBoundary, type QueryClient } from '@tanstack/react-query';
-import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query';
-import { cookies, headers } from 'next/headers';
-import { cache } from 'react';
-import { createContext } from '@/server/api/context';
-import { appRouter } from './routers/_app';
-import { createQueryClient } from './shared';
+import "server-only";
+import { dehydrate, HydrationBoundary, type QueryClient } from "@tanstack/react-query";
+import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
+import { cookies, headers } from "next/headers";
+import { cache } from "react";
+import { createContext } from "@/server/api/context";
+import { appRouter } from "./routers/_app";
+import { createQueryClient } from "./shared";
 
 /**
  * Creates a stable getter for the query client,
@@ -25,13 +25,13 @@ export const trpc = createTRPCOptionsProxy({
         const serverCookies = await cookies();
 
         return createContext({
-            req: new Request('http://localhost', { headers: serverHeaders }),
+            req: new Request("http://localhost", { headers: serverHeaders }),
             opts: {
                 headers: serverHeaders,
-                cookies: serverCookies
-            }
+                cookies: serverCookies,
+            },
         });
-    }
+    },
 });
 /**
  * A wrapper component that hydrates the query client state
@@ -45,15 +45,15 @@ export function HydrateClient(props: { children: React.ReactNode }) {
 /**
  * Type for prefetch options - using tRPC's proper types
  */
-type PrefetchOptions = Parameters<QueryClient['prefetchQuery']>[0];
-type PrefetchInfiniteOptions = Parameters<QueryClient['prefetchInfiniteQuery']>[0];
+type PrefetchOptions = Parameters<QueryClient["prefetchQuery"]>[0];
+type PrefetchInfiniteOptions = Parameters<QueryClient["prefetchInfiniteQuery"]>[0];
 
 /**
  * A type guard to check if options are for an infinite query
  */
 function isInfiniteQuery(options: PrefetchOptions | PrefetchInfiniteOptions): options is PrefetchInfiniteOptions {
     // Check if it has infinite query specific properties
-    return 'cursor' in options || 'initialCursor' in options;
+    return "cursor" in options || "initialCursor" in options;
 }
 
 /**

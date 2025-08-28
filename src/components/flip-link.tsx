@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { motion } from 'motion/react';
+import { motion } from "motion/react";
 
 const DURATION = 0.25;
 const STAGGER = 0.025;
@@ -13,54 +13,54 @@ type Props = {
 const FlipLink = ({ children, href }: Props) => {
     return (
         <motion.a
-            className='relative block overflow-hidden whitespace-nowrap font-light uppercase'
+            className="relative block overflow-hidden whitespace-nowrap font-light uppercase"
             href={href}
-            initial='initial'
+            initial="initial"
             style={{
-                lineHeight: 0.75
+                lineHeight: 0.75,
             }}
-            whileHover='hovered'
+            whileHover="hovered"
         >
             <div>
-                {children.split('').map((l, i) => (
+                {children.split("").map((l, i) => (
                     <motion.span
-                        className='inline-block'
+                        className="inline-block"
                         key={l.length}
                         transition={{
                             duration: DURATION,
-                            ease: 'easeInOut',
-                            delay: STAGGER * i
+                            ease: "easeInOut",
+                            delay: STAGGER * i,
                         }}
                         variants={{
                             initial: {
-                                y: 0
+                                y: 0,
                             },
                             hovered: {
-                                y: '-100%'
-                            }
+                                y: "-100%",
+                            },
                         }}
                     >
                         {l}
                     </motion.span>
                 ))}
             </div>
-            <div className='absolute inset-0'>
-                {children.split('').map((l, i) => (
+            <div className="absolute inset-0">
+                {children.split("").map((l, i) => (
                     <motion.span
-                        className='inline-block'
+                        className="inline-block"
                         key={l.length}
                         transition={{
                             duration: DURATION,
-                            ease: 'easeInOut',
-                            delay: STAGGER * i
+                            ease: "easeInOut",
+                            delay: STAGGER * i,
                         }}
                         variants={{
                             initial: {
-                                y: '100%'
+                                y: "100%",
                             },
                             hovered: {
-                                y: 0
-                            }
+                                y: 0,
+                            },
                         }}
                     >
                         {l}

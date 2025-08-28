@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { PlusIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import type { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
 
-import { DiagnosisSchema } from '@/lib/schema';
-import { trpc } from '@/trpc/client';
+import { DiagnosisSchema } from "@/lib/schema";
+import { trpc } from "@/trpc/client";
 
-import { CustomInput } from '../custom-input';
-import { Button } from '../ui/button';
-import { CardDescription, CardHeader } from '../ui/card';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Form } from '../ui/form';
+import { CustomInput } from "../custom-input";
+import { Button } from "../ui/button";
+import { CardDescription, CardHeader } from "../ui/card";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Form } from "../ui/form";
 
 type AddDiagnosisProps = {
     patientId: string;
@@ -35,19 +35,19 @@ export const AddDiagnosis = ({ patientId, doctorId, appointmentId, medicalId }: 
             patientId,
             doctorId,
             medicalId,
-            symptoms: '',
-            diagnosis: '',
-            notes: '',
-            prescribedMedications: '',
-            followUpPlan: ''
-        }
+            symptoms: "",
+            diagnosis: "",
+            notes: "",
+            prescribedMedications: "",
+            followUpPlan: "",
+        },
     });
 
     const addDiagnosis = trpc.payment.addDiagnosis.useMutation({
         onSuccess: data => {
-            if (data.success && 'message' in data) {
+            if (data.success && "message" in data) {
                 toast.success(data.message);
-            } else if (!data.success && 'error' in data) {
+            } else if (!data.success && "error" in data) {
                 toast.error(data.error);
             }
             form.reset();
@@ -55,14 +55,14 @@ export const AddDiagnosis = ({ patientId, doctorId, appointmentId, medicalId }: 
         },
         onError: error => {
             console.error(error);
-            toast.error(error.message || 'Failed to add diagnosis');
-        }
+            toast.error(error.message || "Failed to add diagnosis");
+        },
     });
 
     const onSubmit = (values: DiagnosisFormData) => {
         addDiagnosis.mutate({
             ...values,
-            appointmentId: String(appointmentId)
+            appointmentId: String(appointmentId),
         });
     };
 
@@ -70,20 +70,20 @@ export const AddDiagnosis = ({ patientId, doctorId, appointmentId, medicalId }: 
         <Dialog>
             <DialogTrigger asChild>
                 <Button
-                    className='mt-4 bg-blue-600 text-white'
-                    size='lg'
-                    variant='outline'
+                    className="mt-4 bg-blue-600 text-white"
+                    size="lg"
+                    variant="outline"
                 >
                     <PlusIcon
-                        className='mr-2 text-white'
+                        className="mr-2 text-white"
                         size={22}
                     />
                     Add Diagnosis
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className='sm:max-w-[60%] 2xl:max-w-[40%]'>
-                <CardHeader className='px-0'>
+            <DialogContent className="sm:max-w-[60%] 2xl:max-w-[40%]">
+                <CardHeader className="px-0">
                     <DialogTitle>Add New Diagnosis</DialogTitle>
                     <CardDescription>
                         Ensure accurate findings are submitted and well-documented for future reference.
@@ -92,56 +92,56 @@ export const AddDiagnosis = ({ patientId, doctorId, appointmentId, medicalId }: 
 
                 <Form {...form}>
                     <form
-                        className='space-y-6'
+                        className="space-y-6"
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
                         <CustomInput
                             control={form.control}
-                            label='Symptoms'
-                            name='symptoms'
-                            placeholder='Enter symptoms here...'
-                            type='textarea'
+                            label="Symptoms"
+                            name="symptoms"
+                            placeholder="Enter symptoms here..."
+                            type="textarea"
                         />
 
                         <CustomInput
                             control={form.control}
-                            label='Diagnosis (Findings)'
-                            name='diagnosis'
-                            placeholder='Enter diagnosis here...'
-                            type='textarea'
+                            label="Diagnosis (Findings)"
+                            name="diagnosis"
+                            placeholder="Enter diagnosis here..."
+                            type="textarea"
                         />
 
                         <CustomInput
                             control={form.control}
-                            label='Prescriptions for this patient'
-                            name='prescribedMedications'
-                            placeholder='Enter medications...'
-                            type='textarea'
+                            label="Prescriptions for this patient"
+                            name="prescribedMedications"
+                            placeholder="Enter medications..."
+                            type="textarea"
                         />
 
-                        <div className='flex items-center gap-4'>
+                        <div className="flex items-center gap-4">
                             <CustomInput
                                 control={form.control}
-                                label='Additional Notes'
-                                name='notes'
-                                placeholder='Optional note'
-                                type='textarea'
+                                label="Additional Notes"
+                                name="notes"
+                                placeholder="Optional note"
+                                type="textarea"
                             />
                             <CustomInput
                                 control={form.control}
-                                label='Follow Up Plan'
-                                name='followUpPlan'
-                                placeholder='Optional'
-                                type='textarea'
+                                label="Follow Up Plan"
+                                name="followUpPlan"
+                                placeholder="Optional"
+                                type="textarea"
                             />
                         </div>
 
                         <Button
-                            className='w-full bg-blue-600'
+                            className="w-full bg-blue-600"
                             disabled={addDiagnosis.isPending}
-                            type='submit'
+                            type="submit"
                         >
-                            {addDiagnosis.isPending ? 'Submitting...' : 'Submit'}
+                            {addDiagnosis.isPending ? "Submitting..." : "Submit"}
                         </Button>
                     </form>
                 </Form>

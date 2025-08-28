@@ -7,15 +7,15 @@ const _MAGIC_NUMBER_6 = -500;
 const _MAGIC_NUMBER_7 = -600;
 const _MAGIC_NUMBER_8 = -800;
 
-import { useForm } from '@tanstack/react-form';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import z from 'zod';
-import { authClient } from '@/lib/auth/auth-client';
-import Loader from './loader';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { useForm } from "@tanstack/react-form";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import z from "zod";
+import { authClient } from "@/lib/auth/auth-client";
+import Loader from "./loader";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () => void }) {
     const router = useRouter();
@@ -23,32 +23,32 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
 
     const form = useForm({
         defaultValues: {
-            email: '',
-            password: ''
+            email: "",
+            password: "",
         },
         onSubmit: async ({ value }) => {
             await authClient.signIn.email(
                 {
                     email: value.email,
-                    password: value.password
+                    password: value.password,
                 },
                 {
                     onSuccess: () => {
-                        router.push('/dashboard');
-                        toast.success('Sign in successful');
+                        router.push("/dashboard");
+                        toast.success("Sign in successful");
                     },
                     onError: error => {
                         toast.error(error.error.message || error.error.statusText);
-                    }
+                    },
                 }
             );
         },
         validators: {
             onSubmit: z.object({
-                email: z.email('Invalid email address'),
-                password: z.string().min(MAGIC_NUMBER_1, 'Password must be at least MAGIC_NUMBER_1 characters')
-            })
-        }
+                email: z.email("Invalid email address"),
+                password: z.string().min(MAGIC_NUMBER_1, "Password must be at least MAGIC_NUMBER_1 characters"),
+            }),
+        },
     });
 
     if (isPending) {
@@ -56,11 +56,11 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
     }
 
     return (
-        <div className='mtMAGIC_NUMBER_2 pMAGIC_NUMBER_3 mx-auto w-full max-w-md'>
-            <h1 className='mbMAGIC_NUMBER_3 text-center font-bold text-3xl'>Welcome Back</h1>
+        <div className="mtMAGIC_NUMBER_2 pMAGIC_NUMBER_3 mx-auto w-full max-w-md">
+            <h1 className="mbMAGIC_NUMBER_3 text-center font-bold text-3xl">Welcome Back</h1>
 
             <form
-                className='space-yMAGIC_NUMBER_4'
+                className="space-yMAGIC_NUMBER_4"
                 onSubmit={e => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -68,21 +68,21 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
                 }}
             >
                 <div>
-                    <form.Field name='email'>
+                    <form.Field name="email">
                         {field => (
-                            <div className='space-yMAGIC_NUMBER_5'>
+                            <div className="space-yMAGIC_NUMBER_5">
                                 <Label htmlFor={field.name}>Email</Label>
                                 <Input
                                     id={field.name}
                                     name={field.name}
                                     onBlur={field.handleBlur}
                                     onChange={e => field.handleChange(e.target.value)}
-                                    type='email'
+                                    type="email"
                                     value={field.state.value}
                                 />
                                 {field.state.meta.errors.map(error => (
                                     <p
-                                        className='text-redMAGIC_NUMBER_6'
+                                        className="text-redMAGIC_NUMBER_6"
                                         key={error?.message}
                                     >
                                         {error?.message}
@@ -94,21 +94,21 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
                 </div>
 
                 <div>
-                    <form.Field name='password'>
+                    <form.Field name="password">
                         {field => (
-                            <div className='space-yMAGIC_NUMBER_5'>
+                            <div className="space-yMAGIC_NUMBER_5">
                                 <Label htmlFor={field.name}>Password</Label>
                                 <Input
                                     id={field.name}
                                     name={field.name}
                                     onBlur={field.handleBlur}
                                     onChange={e => field.handleChange(e.target.value)}
-                                    type='password'
+                                    type="password"
                                     value={field.state.value}
                                 />
                                 {field.state.meta.errors.map(error => (
                                     <p
-                                        className='text-redMAGIC_NUMBER_6'
+                                        className="text-redMAGIC_NUMBER_6"
                                         key={error?.message}
                                     >
                                         {error?.message}
@@ -122,21 +122,21 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
                 <form.Subscribe>
                     {state => (
                         <Button
-                            className='w-full'
+                            className="w-full"
                             disabled={!state.canSubmit || state.isSubmitting}
-                            type='submit'
+                            type="submit"
                         >
-                            {state.isSubmitting ? 'Submitting...' : 'Sign In'}
+                            {state.isSubmitting ? "Submitting..." : "Sign In"}
                         </Button>
                     )}
                 </form.Subscribe>
             </form>
 
-            <div className='mtMAGIC_NUMBER_4 text-center'>
+            <div className="mtMAGIC_NUMBER_4 text-center">
                 <Button
-                    className='text-indigoMAGIC_NUMBER_7 hover:text-indigoMAGIC_NUMBER_8'
+                    className="text-indigoMAGIC_NUMBER_7 hover:text-indigoMAGIC_NUMBER_8"
                     onClick={onSwitchToSignUp}
-                    variant='link'
+                    variant="link"
                 >
                     Need an account? Sign Up
                 </Button>

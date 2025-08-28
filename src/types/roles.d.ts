@@ -1,7 +1,7 @@
-import { auth } from '@/lib/auth'; // Your Better-Auth instance
-import { Roles } from '@/types/roles';
+import { auth } from "@/lib/auth"; // Your Better-Auth instance
+import { Roles } from "@/types/roles";
 
-export * from './globals';
+export * from "./globals";
 export const checkRole = async (_role: Roles): Promise<boolean> => {
     const session = await auth.api.getSession();
 
@@ -15,7 +15,7 @@ export const getRole = async (): Promise<string> => {
     const session = await getSession();
 
     // Default to "patient" if role is missing
-    const role = session?.user?.publicMetadata?.role?.toLowerCase() || 'patient';
+    const role = session?.user?.publicMetadata?.role?.toLowerCase() || "patient";
 
     return role;
 };

@@ -4,11 +4,11 @@ const MAGIC_NUMBER_3 = 5;
 const MAGIC_NUMBER_4 = 10;
 const MAGIC_NUMBER_5 = 3;
 
-import { getSession } from '@/lib/auth'; // your BetterAuth instance
-import { db } from '@/server/db';
-import { processAppointments } from '@/types/helper';
+import { getSession } from "@/lib/auth"; // your BetterAuth instance
+import { db } from "@/server/db";
+import { processAppointments } from "@/types/helper";
 
-import { daysOfWeek } from '../';
+import { daysOfWeek } from "../";
 
 export async function getDoctors() {
     try {
@@ -19,8 +19,8 @@ export async function getDoctors() {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_2
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_2,
         };
     }
 }
@@ -33,11 +33,11 @@ export async function getDoctorDashboardStats() {
 
         const [totalPatient, totalNurses, appointments, doctors] = await Promise.all([
             db.patient.count(),
-            db.staff.count({ where: { role: 'STAFF' } }),
+            db.staff.count({ where: { role: "STAFF" } }),
             db.appointment.findMany({
                 where: {
-                    doctorId: userId ?? 'N/A',
-                    appointmentDate: { lte: new Date() }
+                    doctorId: userId ?? "N/A",
+                    appointmentDate: { lte: new Date() },
                 },
                 include: {
                     patient: {
@@ -48,8 +48,8 @@ export async function getDoctorDashboardStats() {
                             gender: true,
                             dateOfBirth: true,
                             colorCode: true,
-                            img: true
-                        }
+                            img: true,
+                        },
                     },
                     doctor: {
                         select: {
@@ -57,17 +57,17 @@ export async function getDoctorDashboardStats() {
                             name: true,
                             specialization: true,
                             img: true,
-                            colorCode: true
-                        }
-                    }
+                            colorCode: true,
+                        },
+                    },
                 },
-                orderBy: { appointmentDate: 'desc' }
+                orderBy: { appointmentDate: "desc" },
             }),
             db.doctor.findMany({
                 where: {
                     workingDays: {
-                        some: { day: { equals: today, mode: 'insensitive' } }
-                    }
+                        some: { day: { equals: today, mode: "insensitive" } },
+                    },
                 },
                 select: {
                     id: true,
@@ -75,10 +75,10 @@ export async function getDoctorDashboardStats() {
                     specialization: true,
                     img: true,
                     colorCode: true,
-                    workingDays: true
+                    workingDays: true,
                 },
-                take: MAGIC_NUMBER_3
-            })
+                take: MAGIC_NUMBER_3,
+            }),
         ]);
 
         const { appointmentCounts, monthlyData } = await processAppointments(appointments);
@@ -93,14 +93,14 @@ export async function getDoctorDashboardStats() {
             last5Records,
             availableDoctors: doctors,
             totalAppointment: appointments?.length,
-            monthlyData
+            monthlyData,
         };
     } catch (error) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_2
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_2,
         };
     }
 }
@@ -121,26 +121,26 @@ export async function getDoctorById(id: string) {
                                     lastName: true,
                                     gender: true,
                                     img: true,
-                                    colorCode: true
-                                }
+                                    colorCode: true,
+                                },
                             },
                             doctor: {
                                 select: {
                                     name: true,
                                     specialization: true,
                                     img: true,
-                                    colorCode: true
-                                }
-                            }
+                                    colorCode: true,
+                                },
+                            },
                         },
-                        orderBy: { appointmentDate: 'desc' },
-                        take: MAGIC_NUMBER_4
-                    }
-                }
+                        orderBy: { appointmentDate: "desc" },
+                        take: MAGIC_NUMBER_4,
+                    },
+                },
             }),
             db.appointment.count({
-                where: { doctorId: id }
-            })
+                where: { doctorId: id },
+            }),
         ]);
 
         return { data: doctor, totalAppointment };
@@ -148,8 +148,8 @@ export async function getDoctorById(id: string) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_2
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_2,
         };
     }
 }
@@ -159,8 +159,8 @@ export async function getRatingById(id: string) {
         const data = await db.rating.findMany({
             where: { staffId: id },
             include: {
-                patient: { select: { lastName: true, firstName: true } }
-            }
+                patient: { select: { lastName: true, firstName: true } },
+            },
         });
 
         const totalRatings = data?.length;
@@ -172,14 +172,14 @@ export async function getRatingById(id: string) {
         return {
             totalRatings,
             averageRating: formattedRatings,
-            ratings: data
+            ratings: data,
         };
     } catch (error) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_2
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_2,
         };
     }
 }
@@ -187,7 +187,7 @@ export async function getRatingById(id: string) {
 export async function getAllDoctors({
     page,
     limit,
-    search
+    search,
 }: {
     page: number | string;
     limit?: number | string;
@@ -203,16 +203,16 @@ export async function getAllDoctors({
             db.doctor.findMany({
                 where: {
                     OR: [
-                        { name: { contains: search, mode: 'insensitive' } },
-                        { specialization: { contains: search, mode: 'insensitive' } },
-                        { email: { contains: search, mode: 'insensitive' } }
-                    ]
+                        { name: { contains: search, mode: "insensitive" } },
+                        { specialization: { contains: search, mode: "insensitive" } },
+                        { email: { contains: search, mode: "insensitive" } },
+                    ],
                 },
                 include: { workingDays: true },
                 skip: SKIP,
-                take: LIMIT
+                take: LIMIT,
             }),
-            db.doctor.count()
+            db.doctor.count(),
         ]);
 
         const totalPages = Math.ceil(totalRecords / LIMIT);
@@ -223,14 +223,14 @@ export async function getAllDoctors({
             totalRecords,
             totalPages,
             currentPage: PAGE_NUMBER,
-            status: MAGIC_NUMBER_1
+            status: MAGIC_NUMBER_1,
         };
     } catch (error) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_2
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_2,
         };
     }
 }
@@ -243,9 +243,9 @@ export async function getAvailableDoctors() {
         const doctors = await db.doctor.findMany({
             where: {
                 workingDays: {
-                    some: { day: { equals: today, mode: 'insensitive' } }
+                    some: { day: { equals: today, mode: "insensitive" } },
                 },
-                availabilityStatus: 'available'
+                availabilityStatus: "available",
             },
             select: {
                 id: true,
@@ -253,9 +253,9 @@ export async function getAvailableDoctors() {
                 specialization: true,
                 img: true,
                 colorCode: true,
-                workingDays: true
+                workingDays: true,
             },
-            take: MAGIC_NUMBER_5
+            take: MAGIC_NUMBER_5,
         });
 
         return { success: true, data: doctors, status: MAGIC_NUMBER_1 };
@@ -263,8 +263,8 @@ export async function getAvailableDoctors() {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_2
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_2,
         };
     }
 }

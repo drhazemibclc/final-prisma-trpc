@@ -1,11 +1,11 @@
-import type { PopoverContentProps } from '@radix-ui/react-popover';
-import { useDebouncedEffect, useMap, useMountEffect } from '@react-hookz/web';
-import { CheckIcon, ChevronDownIcon, Loader2Icon } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import type { PopoverContentProps } from "@radix-ui/react-popover";
+import { useDebouncedEffect, useMap, useMountEffect } from "@react-hookz/web";
+import { CheckIcon, ChevronDownIcon, Loader2Icon } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 export type Option = {
     value: string;
@@ -72,7 +72,7 @@ export function AsyncSelect<T>({
     notFound,
     loadingSkeleton,
     label,
-    placeholder = 'Select...',
+    placeholder = "Select...",
     searchPlaceholder,
     value,
     onChange,
@@ -83,13 +83,13 @@ export function AsyncSelect<T>({
     clearable = true,
     multiple = false,
     isInvalid = false,
-    popoverContentProps
+    popoverContentProps,
 }: AsyncSelectProps<T>) {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState<T[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState("");
     const [originalOptions, setOriginalOptions] = useState<T[]>([]);
 
     const cache = useMap<string, T[]>();
@@ -107,7 +107,7 @@ export function AsyncSelect<T>({
 
     const fetchOptions = useCallback(
         async (query?: string) => {
-            const cacheKey = query ?? '__initial__';
+            const cacheKey = query ?? "__initial__";
             if (getCachedData(cacheKey, query)) return;
             try {
                 setLoading(true);
@@ -117,7 +117,7 @@ export function AsyncSelect<T>({
                 setOptions(data);
                 if (!query) setOriginalOptions(data);
             } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to fetch options');
+                setError(err instanceof Error ? err.message : "Failed to fetch options");
             } finally {
                 setLoading(false);
             }
@@ -187,39 +187,39 @@ export function AsyncSelect<T>({
                     aria-expanded={open}
                     aria-invalid={isInvalid}
                     className={cn(
-                        'group/async-select w-full justify-between font-normal',
-                        disabled && 'cursor-not-allowed opacity-50',
+                        "group/async-select w-full justify-between font-normal",
+                        disabled && "cursor-not-allowed opacity-50",
                         triggerClassName
                     )}
                     disabled={disabled}
                 >
                     {value.length === 0 ? placeholder : getDisplayValue(value)}
                     <ChevronDownIcon
-                        className='opacity-50 group-hover/async-select:opacity-100'
+                        className="opacity-50 group-hover/async-select:opacity-100"
                         size={10}
                     />
                 </select>
             </PopoverTrigger>
             <PopoverContent
-                className={cn('p-0', className)}
+                className={cn("p-0", className)}
                 {...popoverContentProps}
             >
-                <Command className='[&_div[cmdk-input-wrapper]]:px-3'>
-                    <div className='relative'>
+                <Command className="[&_div[cmdk-input-wrapper]]:px-3">
+                    <div className="relative">
                         <CommandInput
-                            className='rounded-none border-none focus-visible:ring-0'
+                            className="rounded-none border-none focus-visible:ring-0"
                             onValueChange={setSearchTerm}
                             placeholder={searchPlaceholder ?? `Search ${label.toLowerCase()}...`}
                             value={searchTerm}
                         />
                         {showLoader && (
-                            <div className='-translate-y-1/2 absolute top-1/2 right-2 flex transform items-center'>
-                                <Loader2Icon className='h-4 w-4 animate-spin' />
+                            <div className="-translate-y-1/2 absolute top-1/2 right-2 flex transform items-center">
+                                <Loader2Icon className="h-4 w-4 animate-spin" />
                             </div>
                         )}
                     </div>
                     <CommandList>
-                        {error && <div className='p-4 text-center text-destructive'>{error}</div>}
+                        {error && <div className="p-4 text-center text-destructive">{error}</div>}
                         {showSkeleton && (loadingSkeleton || <DefaultLoadingSkeleton />)}
                         {showNotFound &&
                             (notFound || (
@@ -235,10 +235,10 @@ export function AsyncSelect<T>({
                                     {renderOption(option)}
                                     <CheckIcon
                                         className={cn(
-                                            'ml-auto size-4',
+                                            "ml-auto size-4",
                                             value.some(v => getOptionValue(v) === getOptionValue(option))
-                                                ? 'opacity-100'
-                                                : 'opacity-0'
+                                                ? "opacity-100"
+                                                : "opacity-0"
                                         )}
                                     />
                                 </CommandItem>
@@ -259,11 +259,11 @@ function DefaultLoadingSkeleton() {
                     disabled
                     key={i}
                 >
-                    <div className='flex w-full items-center gap-2'>
-                        <div className='h-6 w-6 animate-pulse rounded-full bg-border' />
-                        <div className='flex flex-1 flex-col gap-1'>
-                            <div className='h-4 w-40 animate-pulse rounded bg-border' />
-                            <div className='h-3 w-32 animate-pulse rounded bg-border' />
+                    <div className="flex w-full items-center gap-2">
+                        <div className="h-6 w-6 animate-pulse rounded-full bg-border" />
+                        <div className="flex flex-1 flex-col gap-1">
+                            <div className="h-4 w-40 animate-pulse rounded bg-border" />
+                            <div className="h-3 w-32 animate-pulse rounded bg-border" />
                         </div>
                     </div>
                 </CommandItem>

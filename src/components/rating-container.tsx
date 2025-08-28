@@ -2,10 +2,10 @@
 
 // FIX: Import 'caller' instead of 'trpc' for direct server-side calls
 
-import { cookies, headers } from 'next/headers';
-import { createCaller } from '@/trpc/server';
-import { RatingChart } from './charts/rating-chart';
-import { RatingList } from './rating-list';
+import { cookies, headers } from "next/headers";
+import { createCaller } from "@/trpc/server";
+import { RatingChart } from "./charts/rating-chart";
+import { RatingList } from "./rating-list";
 
 // Define the expected type for a single rating item with patient details
 // This type should match what your getRatingById procedure returns.
@@ -27,9 +27,9 @@ type RatingWithPatient = {
 export const RatingContainer = async ({ id }: { id: string }) => {
     // FIX: Use 'caller' to directly call the tRPC procedure
     const caller = await createCaller({
-        req: new Request('http://localhost', { headers: await headers() }),
+        req: new Request("http://localhost", { headers: await headers() }),
         headers: await headers(),
-        cookies: await cookies()
+        cookies: await cookies(),
     });
 
     const result = await caller.doctor.getRatingById(id);
@@ -40,7 +40,7 @@ export const RatingContainer = async ({ id }: { id: string }) => {
     const { ratings, totalRatings, averageRating } = result;
 
     return (
-        <div className='space-y-4'>
+        <div className="space-y-4">
             <RatingChart
                 averageRating={Number(averageRating ?? 10)} // Ensure averageRating is a number
                 totalRatings={totalRatings ?? 50} // Ensure totalRatings is a number
@@ -49,7 +49,7 @@ export const RatingContainer = async ({ id }: { id: string }) => {
                 data={(ratings ?? []).map((rating: RatingWithPatient) => ({
                     // Explicitly type 'rating'
                     ...rating,
-                    comment: rating.comment === null ? undefined : rating.comment
+                    comment: rating.comment === null ? undefined : rating.comment,
                 }))}
             />
         </div>

@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { PlusIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import type { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
 
-import { ServicesSchema } from '@/lib/schema';
-import { trpc } from '@/trpc/client';
+import { ServicesSchema } from "@/lib/schema";
+import { trpc } from "@/trpc/client";
 
-import { CustomInput } from '../custom-input';
-import { Button } from '../ui/button';
-import { CardDescription, CardHeader } from '../ui/card';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Form } from '../ui/form';
+import { CustomInput } from "../custom-input";
+import { Button } from "../ui/button";
+import { CardDescription, CardHeader } from "../ui/card";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Form } from "../ui/form";
 
 export const AddService = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +24,10 @@ export const AddService = () => {
     const form = useForm<z.infer<typeof ServicesSchema>>({
         resolver: zodResolver(ServicesSchema),
         defaultValues: {
-            serviceName: '',
+            serviceName: "",
             price: 0,
-            description: ''
-        }
+            description: "",
+        },
     });
 
     const addService = trpc.admin.addNewService.useMutation({
@@ -39,16 +39,16 @@ export const AddService = () => {
         },
         onError: error => {
             console.error(error);
-            toast.error(error.message || 'Something went wrong. Please try again.');
+            toast.error(error.message || "Something went wrong. Please try again.");
             setIsLoading(false);
-        }
+        },
     });
 
     const onSubmit = (values: z.infer<typeof ServicesSchema>) => {
         setIsLoading(true);
         addService.mutate({
             ...values,
-            price: Number(values.price)
+            price: Number(values.price),
         });
     };
 
@@ -56,18 +56,18 @@ export const AddService = () => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button
-                    className='font-normal text-sm'
-                    size='sm'
+                    className="font-normal text-sm"
+                    size="sm"
                 >
                     <PlusIcon
-                        className='text-gray-500'
+                        className="text-gray-500"
                         size={22}
-                    />{' '}
+                    />{" "}
                     Add New Service
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <CardHeader className='px-0'>
+                <CardHeader className="px-0">
                     <DialogTitle>Add New Service</DialogTitle>
                     <CardDescription>
                         Ensure accurate data entry as this may affect diagnostics and other medical processes.
@@ -76,39 +76,39 @@ export const AddService = () => {
 
                 <Form {...form}>
                     <form
-                        className='space-y-8'
+                        className="space-y-8"
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
                         <CustomInput
                             control={form.control}
-                            label='Service Name'
-                            name='serviceName'
-                            placeholder='Enter service name'
-                            type='input'
+                            label="Service Name"
+                            name="serviceName"
+                            placeholder="Enter service name"
+                            type="input"
                         />
 
                         <CustomInput
                             control={form.control}
-                            label='Service Price'
-                            name='price'
-                            placeholder='Enter price'
-                            type='input'
+                            label="Service Price"
+                            name="price"
+                            placeholder="Enter price"
+                            type="input"
                         />
 
                         <CustomInput
                             control={form.control}
-                            label='Service Description'
-                            name='description'
-                            placeholder='Optional description'
-                            type='textarea'
+                            label="Service Description"
+                            name="description"
+                            placeholder="Optional description"
+                            type="textarea"
                         />
 
                         <Button
-                            className='w-full bg-blue-600'
+                            className="w-full bg-blue-600"
                             disabled={isLoading}
-                            type='submit'
+                            type="submit"
                         >
-                            {isLoading ? 'Submitting...' : 'Submit'}
+                            {isLoading ? "Submitting..." : "Submit"}
                         </Button>
                     </form>
                 </Form>

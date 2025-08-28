@@ -1,8 +1,8 @@
 // server/api/trpc.ts
-import { cache } from 'react';
-import { auth } from '@/lib/auth';
-import type { ReadonlyRequestCookies } from '@/types';
-import db from '../db';
+import { cache } from "react";
+import { auth } from "@/lib/auth";
+import type { ReadonlyRequestCookies } from "@/types/globals";
+import db from "../db";
 
 // Cached session resolver with error handling
 const getSession = cache(async (headers?: Headers) => {
@@ -10,7 +10,7 @@ const getSession = cache(async (headers?: Headers) => {
     try {
         return await auth.api.getSession({ headers });
     } catch (error) {
-        console.error('Failed to get session:', error);
+        console.error("Failed to get session:", error);
         return null;
     }
 });
@@ -29,7 +29,7 @@ export const createContext = async ({ req, opts = {} }: { req?: Request; opts?: 
         session,
         user: session?.user ?? null,
         req: req ?? null,
-        ...opts
+        ...opts,
     };
 };
 

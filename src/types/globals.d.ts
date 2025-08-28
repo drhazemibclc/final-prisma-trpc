@@ -9,7 +9,7 @@ export interface Cookie {
     path: string;
     expires?: number; // Unix timestamp in milliseconds
     secure: boolean;
-    sameSite: 'Strict' | 'Lax' | 'None';
+    sameSite: "Strict" | "Lax" | "None";
 }
 
 export interface CookieInit {
@@ -19,7 +19,7 @@ export interface CookieInit {
     path?: string;
     expires?: number; // Unix timestamp in milliseconds
     secure?: boolean;
-    sameSite?: 'Strict' | 'Lax' | 'None';
+    sameSite?: "Strict" | "Lax" | "None";
 }
 
 export interface CookieChangeEvent extends Event {
@@ -36,7 +36,7 @@ export interface CookieStore {
 
     // Specific event listener for 'change' events on the CookieStore
     addEventListener(
-        type: 'change',
+        type: "change",
         listener: (this: CookieStore, ev: CookieChangeEvent) => void,
         options?: boolean | AddEventListenerOptions
     ): void;
@@ -48,7 +48,7 @@ export interface CookieStore {
     ): void;
 
     removeEventListener(
-        type: 'change',
+        type: "change",
         listener: (this: CookieStore, ev: CookieChangeEvent) => void,
         options?: boolean | EventListenerOptions
     ): void;
@@ -76,7 +76,7 @@ declare global {
 }
 
 // --- Regarding Next.js types (keep them separate or in next-env.d.ts) ---
-import type { cookies } from 'next/headers';
+import type { cookies } from "next/headers";
 
 type ReadonlyRequestCookies = ReturnType<typeof cookies> extends Promise<infer T> ? T : never;
 export type { ReadonlyRequestCookies };

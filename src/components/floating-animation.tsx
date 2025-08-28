@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { motion } from 'motion/react';
-import type { ReactNode } from 'react';
+import { motion } from "motion/react";
+import type { ReactNode } from "react";
 
 type FloatingAnimationProps = {
     children: ReactNode;
@@ -18,22 +18,22 @@ const FloatingAnimation = ({
     children,
     delay = 0,
     duration = 4,
-    className = '',
-    yOffset = 10
+    className = "",
+    yOffset = 10,
 }: FloatingAnimationProps) => {
     return (
         <motion.div
             animate={{
-                y: [0, -yOffset, 0]
+                y: [0, -yOffset, 0],
             }}
             className={className}
             initial={{ y: 0 }}
             transition={{
                 duration,
-                ease: 'easeInOut',
+                ease: "easeInOut",
                 repeat: Number.POSITIVE_INFINITY,
-                repeatType: 'loop',
-                delay
+                repeatType: "loop",
+                delay,
             }}
         >
             {children}

@@ -1,6 +1,6 @@
-import db from '@/server/db';
+import db from "@/server/db";
 
-import { MedicalHistory } from './medical-history';
+import { MedicalHistory } from "./medical-history";
 
 interface DataProps {
     id?: number | string;
@@ -12,10 +12,10 @@ export const MedicalHistoryContainer = async ({ patientId }: DataProps) => {
         where: { patientId: patientId },
         include: {
             diagnosis: { include: { doctor: true } },
-            labTest: true
+            labTest: true,
         },
 
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: "desc" },
     });
     return (
         <MedicalHistory

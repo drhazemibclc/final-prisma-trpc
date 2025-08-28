@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { UIMessage } from 'ai';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import type { UIMessage } from "ai";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface UseScrollMessagesProps {
     messages: UIMessage[];
-    status: 'streaming' | 'submitted' | 'ready' | 'error';
+    status: "streaming" | "submitted" | "ready" | "error";
     isInitialLoad?: boolean;
     isFirstTimeChat?: boolean;
 }
@@ -14,7 +14,7 @@ export function useScrollMessages({
     messages,
     status,
     isInitialLoad = false,
-    isFirstTimeChat = false
+    isFirstTimeChat = false,
 }: UseScrollMessagesProps) {
     // Ref to scrollable container (div with overflow)
     const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -54,7 +54,7 @@ export function useScrollMessages({
 
         container.scrollTo({
             top: container.scrollHeight,
-            behavior: smooth ? 'smooth' : 'auto'
+            behavior: smooth ? "smooth" : "auto",
         });
 
         setUserHasScrolledUp(false);
@@ -90,8 +90,8 @@ export function useScrollMessages({
         const container = messagesContainerRef.current;
         if (!container) return;
 
-        container.addEventListener('scroll', handleScroll, { passive: true });
-        return () => container.removeEventListener('scroll', handleScroll);
+        container.addEventListener("scroll", handleScroll, { passive: true });
+        return () => container.removeEventListener("scroll", handleScroll);
     }, [handleScroll]);
 
     // Track visibility of the last message using IntersectionObserver
@@ -110,7 +110,7 @@ export function useScrollMessages({
             },
             {
                 root: container,
-                threshold: 0.98
+                threshold: 0.98,
             }
         );
 
@@ -139,7 +139,7 @@ export function useScrollMessages({
     // Scroll after response finishes, if allowed
     useEffect(() => {
         if (
-            status === 'ready' &&
+            status === "ready" &&
             shouldAutoScroll &&
             !userHasScrolledUp &&
             messages.length > lastMessageCountRef.current
@@ -161,6 +161,6 @@ export function useScrollMessages({
         showScrollButton,
         scrollToBottom,
         handleScroll,
-        isAtBottom
+        isAtBottom,
     };
 }

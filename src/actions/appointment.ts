@@ -1,17 +1,17 @@
-'use server';
+"use server";
 
-import type { AppointmentStatus } from '@prisma/client';
-import { getSession } from '@/lib/auth';
-import { AppointmentSchema, VitalSignsSchema } from '@/lib/schema';
-import { db } from '@/server/db';
-import type { AppointmentInput, VitalSignsInput } from '@/types/data-types';
+import type { AppointmentStatus } from "@prisma/client";
+import { getSession } from "@/lib/auth";
+import { AppointmentSchema, VitalSignsSchema } from "@/lib/schema";
+import { db } from "@/server/db";
+import type { AppointmentInput, VitalSignsInput } from "@/types/data-types";
 
 export async function createNewAppointment(data: AppointmentInput) {
     try {
         const validatedData = AppointmentSchema.safeParse(data);
 
         if (!validatedData.success) {
-            return { success: false, msg: 'Invalid data' };
+            return { success: false, msg: "Invalid data" };
         }
         const validated = validatedData.data;
 
@@ -23,17 +23,17 @@ export async function createNewAppointment(data: AppointmentInput) {
                 time: validated.time,
                 type: validated.type,
                 appointmentDate: new Date(validated.appointmentDate),
-                note: validated.note
-            }
+                note: validated.note,
+            },
         });
 
         return {
             success: true,
-            message: 'Appointment booked successfully'
+            message: "Appointment booked successfully",
         };
     } catch (error) {
         console.log(error);
-        return { success: false, msg: 'Internal Server Error' };
+        return { success: false, msg: "Internal Server Error" };
     }
 }
 export async function appointmentAction(id: string | number, status: AppointmentStatus, reason: string) {
@@ -42,18 +42,18 @@ export async function appointmentAction(id: string | number, status: Appointment
             where: { id: Number(id) },
             data: {
                 status,
-                reason
-            }
+                reason,
+            },
         });
 
         return {
             success: true,
             error: false,
-            msg: `Appointment ${status.toLowerCase()} successfully`
+            msg: `Appointment ${status.toLowerCase()} successfully`,
         };
     } catch (error) {
         console.log(error);
-        return { success: false, msg: 'Internal Server Error' };
+        return { success: false, msg: "Internal Server Error" };
     }
 }
 
@@ -62,7 +62,7 @@ export async function addVitalSigns(data: VitalSignsInput, appointmentId: number
         const session = await getSession();
         const userId = session?.user.id;
         if (!userId) {
-            return { success: false, msg: 'Unauthorized' };
+            return { success: false, msg: "Unauthorized" };
         }
 
         const validatedData = VitalSignsSchema.parse(data);
@@ -74,8 +74,8 @@ export async function addVitalSigns(data: VitalSignsInput, appointmentId: number
                 data: {
                     patientId: validatedData.patientId,
                     appointmentId,
-                    doctorId
-                }
+                    doctorId,
+                },
             });
         }
 
@@ -84,16 +84,16 @@ export async function addVitalSigns(data: VitalSignsInput, appointmentId: number
         await db.vitalSigns.create({
             data: {
                 ...validatedData,
-                medicalId: medId ?? 0
-            }
+                medicalId: medId ?? 0,
+            },
         });
 
         return {
             success: true,
-            msg: 'Vital signs added successfully'
+            msg: "Vital signs added successfully",
         };
     } catch (error) {
         console.log(error);
-        return { success: false, msg: 'Internal Server Error' };
+        return { success: false, msg: "Internal Server Error" };
     }
 }

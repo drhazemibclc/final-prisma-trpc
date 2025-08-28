@@ -1,23 +1,22 @@
-'use server';
-
+"use server";
 
 const MAGIC_NUMBER_1 = 6;
 
-import z, { treeifyError } from 'zod';
-import { auth, getSession } from '@/lib/auth';
-import { DoctorSchema, ServicesSchema, StaffSchema, workingDaySchema } from '@/lib/schema';
-import db from '@/server/db';
-import type { ServiceInput, StaffInput } from '@/types/data-types';
-import { generateRandomColor } from '@/utils';
-import { checkRole } from '@/utils/roles';
+import z, { treeifyError } from "zod";
+import { auth, getSession } from "@/lib/auth";
+import { DoctorSchema, ServicesSchema, StaffSchema, workingDaySchema } from "@/lib/schema";
+import db from "@/server/db";
+import type { ServiceInput, StaffInput } from "@/types/data-types";
+import { generateRandomColor } from "@/utils";
+import { checkRole } from "@/utils/roles";
 
 export async function createNewStaff(data: StaffInput) {
     try {
         const session = await getSession();
         const userId = session?.user?.id;
 
-        if (!(userId && (await checkRole(session, 'ADMIN')))) {
-            return { success: false, msg: 'Unauthorized' };
+        if (!(userId && (await checkRole(session, "ADMIN")))) {
+            return { success: false, msg: "Unauthorized" };
         }
 
         const result = StaffSchema.safeParse(data);
@@ -25,7 +24,7 @@ export async function createNewStaff(data: StaffInput) {
             return {
                 success: false,
                 errors: true,
-                message: 'Please provide all required info'
+                message: "Please provide all required info",
             };
         }
 
@@ -34,10 +33,10 @@ export async function createNewStaff(data: StaffInput) {
         const user = await auth.api.createUser({
             body: {
                 email: rest.email,
-                password: password ?? '',
+                password: password ?? "",
                 name: rest.name,
-                role: 'doctor'
-            }
+                role: "doctor",
+            },
         });
 
         await db.staff.create({
@@ -47,27 +46,27 @@ export async function createNewStaff(data: StaffInput) {
                 name: user.user.name,
                 id: user.user.id,
                 colorCode: generateRandomColor(),
-                status: 'ACTIVE',
-                phone: rest.phone ?? '',
-                licenseNumber: rest.licenseNumber ?? '',
-                department: rest.department ?? '',
-                img: rest.img ?? ''
-            }
+                status: "ACTIVE",
+                phone: rest.phone ?? "",
+                licenseNumber: rest.licenseNumber ?? "",
+                department: rest.department ?? "",
+                img: rest.img ?? "",
+            },
         });
 
         return {
             success: true,
-            message: 'Doctor added successfully',
-            error: false
+            message: "Doctor added successfully",
+            error: false,
         };
     } catch (error) {
         console.error(error);
-        return { error: true, success: false, message: 'Something went wrong' };
+        return { error: true, success: false, message: "Something went wrong" };
     }
 }
 // Extend DoctorSchema to add password field
 const DoctorAuthSchema = DoctorSchema.extend({
-    password: z.string().min(MAGIC_NUMBER_1, 'Password should be at least MAGIC_NUMBER_1 characters long')
+    password: z.string().min(MAGIC_NUMBER_1, "Password should be at least MAGIC_NUMBER_1 characters long"),
 });
 
 // Resulting input type
@@ -87,9 +86,9 @@ export async function createNewDoctor(
                 success: false,
                 errors: {
                     doctor: doctorResult.success ? undefined : treeifyError(doctorResult.error),
-                    workSchedule: workScheduleResult.success ? undefined : treeifyError(workScheduleResult.error)
+                    workSchedule: workScheduleResult.success ? undefined : treeifyError(workScheduleResult.error),
                 },
-                message: 'Please provide valid and complete doctor and schedule data'
+                message: "Please provide valid and complete doctor and schedule data",
             };
         }
 
@@ -103,8 +102,8 @@ export async function createNewDoctor(
                 email: doctorData.email,
                 password,
                 name,
-                role: 'doctor'
-            }
+                role: "doctor",
+            },
         });
 
         // Create doctor record linked to user ID
@@ -113,8 +112,8 @@ export async function createNewDoctor(
                 ...doctorData,
                 id: user.user.id,
                 userId: user.user.id,
-                name
-            }
+                name,
+            },
         });
 
         // Create work schedule entries if provided
@@ -126,8 +125,8 @@ export async function createNewDoctor(
                             day: ws.day,
                             startTime: ws.startTime,
                             closeTime: ws.closeTime,
-                            doctorId: doctor.id
-                        }
+                            doctorId: doctor.id,
+                        },
                     })
                 )
             );
@@ -135,12 +134,12 @@ export async function createNewDoctor(
 
         return {
             success: true,
-            message: 'Doctor added successfully',
-            error: false
+            message: "Doctor added successfully",
+            error: false,
         };
     } catch (error) {
         console.error(error);
-        return { success: false, error: true, message: 'Something went wrong' };
+        return { success: false, error: true, message: "Something went wrong" };
     }
 }
 
@@ -148,18 +147,18 @@ export async function addNewService(data: ServiceInput) {
     try {
         const result = ServicesSchema.safeParse(data);
         if (!result.success) {
-            return { success: false, msg: 'Invalid data' };
+            return { success: false, msg: "Invalid data" };
         }
 
         const { price, ...rest } = result.data;
 
         await db.services.create({
-            data: { ...rest, price: Number(price) }
+            data: { ...rest, price: Number(price) },
         });
 
-        return { success: true, error: false, msg: 'Service added successfully' };
+        return { success: true, error: false, msg: "Service added successfully" };
     } catch (error) {
         console.error(error);
-        return { success: false, msg: 'Internal Server Error' };
+        return { success: false, msg: "Internal Server Error" };
     }
 }

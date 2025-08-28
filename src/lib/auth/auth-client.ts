@@ -3,26 +3,26 @@ import {
     anonymousClient,
     inferAdditionalFields,
     multiSessionClient,
-    passkeyClient
-} from 'better-auth/client/plugins';
-import { twoFactorClient } from 'better-auth/plugins';
-import { createAuthClient } from 'better-auth/react';
-import type { auth } from '.';
-import { ac, allRoles } from './permissions';
+    passkeyClient,
+} from "better-auth/client/plugins";
+import { twoFactorClient } from "better-auth/plugins";
+import { createAuthClient } from "better-auth/react";
+import type { auth } from ".";
+import { ac, allRoles } from "./permissions";
 
 export const authClient = createAuthClient({
-    baseURL: process.env['NEXT_PUBLIC_SERVER_URL'],
+    baseURL: process.env["NEXT_PUBLIC_SERVER_URL"],
     plugins: [
         adminClient({
             ac,
-            roles: allRoles
+            roles: allRoles,
         }),
         twoFactorClient(),
         passkeyClient(),
         multiSessionClient(),
         anonymousClient(),
-        inferAdditionalFields<typeof auth>()
-    ]
+        inferAdditionalFields<typeof auth>(),
+    ],
 });
 
 export const {
@@ -41,7 +41,7 @@ export const {
     listAccounts,
     listSessions,
     revokeOtherSessions,
-    revokeSessions
+    revokeSessions,
 } = authClient;
 
 export function useUser() {
@@ -56,16 +56,16 @@ export function useRole() {
 
 export function useIsAdmin() {
     const role = useRole();
-    return role === 'admin';
+    return role === "admin";
 }
 export const signInWithGithub = async () => {
     try {
         const data = await signIn.social({
-            provider: 'github'
+            provider: "github",
         });
         return data;
     } catch (error) {
-        console.error('GitHub signin error:', error);
+        console.error("GitHub signin error:", error);
         throw error;
     }
 };

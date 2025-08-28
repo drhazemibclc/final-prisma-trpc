@@ -1,15 +1,15 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-import { createReview } from '@/actions/general';
-import { reviewSchema } from '@/lib/schema';
-import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'; // adjust import path
-import { getAllStaff } from '@/utils/services/staff'; // adjust path to your service
+import { createReview } from "@/actions/general";
+import { reviewSchema } from "@/lib/schema";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"; // adjust import path
+import { getAllStaff } from "@/utils/services/staff"; // adjust path to your service
 
 // Input schema for pagination + search
 const GetAllStaffInputSchema = z.object({
     page: z.number().int().min(1),
     limit: z.number().int().min(1).optional(),
-    search: z.string().optional()
+    search: z.string().optional(),
 });
 
 export const staffRouter = createTRPCRouter({
@@ -18,7 +18,7 @@ export const staffRouter = createTRPCRouter({
     }),
     createReview: protectedProcedure.input(reviewSchema).mutation(async ({ input }) => {
         const result = await createReview(input);
-        if (!result.success) throw new Error(result.message || 'Failed to create review');
+        if (!result.success) throw new Error(result.message || "Failed to create review");
         return result;
-    })
+    }),
 });

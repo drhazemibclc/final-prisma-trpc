@@ -1,7 +1,7 @@
-import type { LucideProps } from 'lucide-react';
-import { icons } from 'lucide-react';
+import type { LucideProps } from "lucide-react";
+import { icons } from "lucide-react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 export type TLucideIconName = keyof typeof icons;
 
@@ -14,7 +14,7 @@ export default function LucideIcon({ name, size, className, ...otherProperties }
     const _LucideIcon = icons[name];
     return (
         <_LucideIcon
-            className={cn({ 'h-[1.2rem] w-[1.2rem]': !size }, className)}
+            className={cn({ "h-[1.2rem] w-[1.2rem]": !size }, className)}
             size={size}
             {...otherProperties}
         />

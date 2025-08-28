@@ -1,32 +1,32 @@
-import { cva, type VariantProps } from 'class-variance-authority';
-import { Loader2Icon } from 'lucide-react';
-import type React from 'react';
+import { cva, type VariantProps } from "class-variance-authority";
+import { Loader2Icon } from "lucide-react";
+import type React from "react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
-const spinnerVariants = cva('flex-col items-center justify-center', {
+const spinnerVariants = cva("flex-col items-center justify-center", {
     variants: {
         show: {
-            true: 'flex',
-            false: 'hidden'
-        }
+            true: "flex",
+            false: "hidden",
+        },
     },
     defaultVariants: {
-        show: true
-    }
+        show: true,
+    },
 });
 
-const loaderVariants = cva('animate-spin text-primary', {
+const loaderVariants = cva("animate-spin text-primary", {
     variants: {
         size: {
-            small: 'size-6',
-            medium: 'size-8',
-            large: 'size-12'
-        }
+            small: "size-6",
+            medium: "size-8",
+            large: "size-12",
+        },
     },
     defaultVariants: {
-        size: 'medium'
-    }
+        size: "medium",
+    },
 });
 
 interface SpinnerContentProps extends VariantProps<typeof spinnerVariants>, VariantProps<typeof loaderVariants> {

@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { type SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
-import { PaymentSchema } from '@/lib/schema';
-import { trpc } from '@/trpc/client';
+import { PaymentSchema } from "@/lib/schema";
+import { trpc } from "@/trpc/client";
 
-import { CustomInput } from '../custom-input';
-import { Button } from '../ui/button';
-import { CardHeader } from '../ui/card';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Form } from '../ui/form';
+import { CustomInput } from "../custom-input";
+import { Button } from "../ui/button";
+import { CardHeader } from "../ui/card";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Form } from "../ui/form";
 
 const schema = PaymentSchema.pick({ discount: true, billDate: true }).extend({
     totalAmount: z.number(),
-    id: z.number().optional()
+    id: z.number().optional(),
 });
 
 type GenerateBillInput = z.infer<typeof schema>;
@@ -35,30 +35,30 @@ export const GenerateFinalBills = ({ id, totalBill }: DataProps) => {
         resolver: zodResolver(schema),
         defaultValues: {
             discount: 0,
-            billDate: new Date() ?? '00/00/0000',
+            billDate: new Date() ?? "00/00/0000",
             totalAmount: totalBill,
-            id: id ?? undefined
-        }
+            id: id ?? undefined,
+        },
     });
 
     const { control, handleSubmit } = form;
 
     const generateBill = trpc.payment.generateBill.useMutation({
         onSuccess: () => {
-            toast.success('Patient bill generated successfully!');
+            toast.success("Patient bill generated successfully!");
             router.refresh();
             form.reset();
         },
         onError: error => {
-            toast.error(error.message || 'Something went wrong');
-        }
+            toast.error(error.message || "Something went wrong");
+        },
     });
 
     const handleOnSubmit: SubmitHandler<GenerateBillInput> = values => {
         generateBill.mutate({
             ...values,
             id: id ?? 1,
-            totalAmount: totalBill
+            totalAmount: totalBill,
         });
     };
 
@@ -66,55 +66,55 @@ export const GenerateFinalBills = ({ id, totalBill }: DataProps) => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button
-                    className='font-normal text-sm'
-                    size='sm'
-                    variant='outline'
+                    className="font-normal text-sm"
+                    size="sm"
+                    variant="outline"
                 >
                     <Plus
-                        className='text-gray-400'
+                        className="text-gray-400"
                         size={22}
                     />
                     Generate Final Bill
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <CardHeader className='px-0'>
+                <CardHeader className="px-0">
                     <DialogTitle>Patient Medical Bill</DialogTitle>
                 </CardHeader>
 
                 <Form {...form}>
                     <form
-                        className='space-y-8'
+                        className="space-y-8"
                         onSubmit={handleSubmit(handleOnSubmit)}
                     >
-                        <div className='flex items-center gap-2'>
+                        <div className="flex items-center gap-2">
                             <div>
                                 <span>Total Bill</span>
-                                <p className='font-semibold text-3xl'>{totalBill.toFixed(2)}</p>
+                                <p className="font-semibold text-3xl">{totalBill.toFixed(2)}</p>
                             </div>
                         </div>
 
                         <CustomInput
                             control={control}
-                            label='Discount (%)'
-                            name='discount'
-                            placeholder='eg.: 5'
-                            type='input'
+                            label="Discount (%)"
+                            name="discount"
+                            placeholder="eg.: 5"
+                            type="input"
                         />
 
                         <CustomInput
                             control={control}
-                            inputType='date'
-                            label='Bill Date'
-                            name='billDate'
-                            placeholder=''
-                            type='input'
+                            inputType="date"
+                            label="Bill Date"
+                            name="billDate"
+                            placeholder=""
+                            type="input"
                         />
 
                         <Button
-                            className='w-full bg-blue-600'
-                            disabled={generateBill.status === 'pending'}
-                            type='submit'
+                            className="w-full bg-blue-600"
+                            disabled={generateBill.status === "pending"}
+                            type="submit"
                         >
                             Generate Bill
                         </Button>

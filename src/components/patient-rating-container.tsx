@@ -1,6 +1,6 @@
-import { getSession } from '@/lib/auth';
-import { db } from '@/server/db';
-import { RatingList } from './rating-list';
+import { getSession } from "@/lib/auth";
+import { db } from "@/server/db";
+import { RatingList } from "./rating-list";
 
 export const PatientRatingContainer = async ({ id }: { id?: string }) => {
     const session = await getSession();
@@ -8,9 +8,9 @@ export const PatientRatingContainer = async ({ id }: { id?: string }) => {
 
     const data = await db.rating.findMany({
         take: 10,
-        where: { patientId: id ? id : (userId ?? 'N/A') },
+        where: { patientId: id ? id : (userId ?? "N/A") },
         include: { patient: { select: { lastName: true, firstName: true } } },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: "desc" },
     });
 
     if (!data) return null; // Though `findMany` always returns an array, empty or not
@@ -19,7 +19,7 @@ export const PatientRatingContainer = async ({ id }: { id?: string }) => {
     const transformedData = data.map(rating => ({
         ...rating,
         // Explicitly check if comment is null and convert to undefined
-        comment: rating.comment === null ? undefined : rating.comment
+        comment: rating.comment === null ? undefined : rating.comment,
     }));
 
     return (

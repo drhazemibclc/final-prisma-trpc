@@ -1,19 +1,17 @@
-'use server';
-
+"use server";
 
 const MAGIC_NUMBER_1 = 201;
 const MAGIC_NUMBER_2 = 500;
 const MAGIC_NUMBER_3 = 0.0;
 const MAGIC_NUMBER_4 = 100;
 
-
 // Import Prisma's Payment type. Ensure this path is correct for your project.
-import type { Payment as PaymentPrismaType } from '@prisma/client';
-import type { z } from 'zod';
-import { getSession } from '@/lib/auth';
-import { AddNewBillInputSchema, type DiagnosisFormData, DiagnosisSchema, type PaymentSchema } from '@/lib/schema';
-import db from '@/server/db';
-import { checkRole } from '@/utils/roles';
+import type { Payment as PaymentPrismaType } from "@prisma/client";
+import type { z } from "zod";
+import { getSession } from "@/lib/auth";
+import { AddNewBillInputSchema, type DiagnosisFormData, DiagnosisSchema, type PaymentSchema } from "@/lib/schema";
+import db from "@/server/db";
+import { checkRole } from "@/utils/roles";
 
 // Define an Input Schema for addNewBill that includes necessary IDs
 
@@ -28,43 +26,43 @@ export const addDiagnosis = async (data: DiagnosisFormData, appointmentId: strin
                 data: {
                     patientId: validatedData.patientId,
                     doctorId: validatedData.doctorId,
-                    appointmentId: Number(appointmentId)
-                }
+                    appointmentId: Number(appointmentId),
+                },
             });
         }
 
         const medId = validatedData.medicalId || medicalRecord?.id;
 
-        if (typeof medId !== 'number') {
-            throw new Error('Medical Record ID is invalid or missing.');
+        if (typeof medId !== "number") {
+            throw new Error("Medical Record ID is invalid or missing.");
         }
 
         await db.diagnosis.create({
             data: {
                 ...validatedData,
-                medicalId: medId
-            }
+                medicalId: medId,
+            },
         });
 
         return {
             success: true,
-            message: 'Diagnosis added successfully',
-            status: MAGIC_NUMBER_1
+            message: "Diagnosis added successfully",
+            status: MAGIC_NUMBER_1,
         };
     } catch (error: unknown) {
-        console.error('Error adding diagnosis:', error);
+        console.error("Error adding diagnosis:", error);
 
-        let errorMessage = 'Failed to add diagnosis';
+        let errorMessage = "Failed to add diagnosis";
         if (error instanceof Error) {
             errorMessage = error.message;
-        } else if (typeof error === 'string') {
+        } else if (typeof error === "string") {
             errorMessage = error;
         }
 
         return {
             success: false,
             error: errorMessage,
-            status: MAGIC_NUMBER_2
+            status: MAGIC_NUMBER_2,
         };
     }
 };
@@ -72,13 +70,13 @@ export const addDiagnosis = async (data: DiagnosisFormData, appointmentId: strin
 export async function addNewBill(data: z.infer<typeof AddNewBillInputSchema>) {
     try {
         const session = await getSession();
-        const isAdmin = await checkRole(session, 'ADMIN');
-        const isDoctor = await checkRole(session, 'DOCTOR');
+        const isAdmin = await checkRole(session, "ADMIN");
+        const isDoctor = await checkRole(session, "DOCTOR");
 
         if (!(isAdmin || isDoctor)) {
             return {
                 success: false,
-                msg: 'You are not authorized to add a bill'
+                msg: "You are not authorized to add a bill",
             };
         }
 
@@ -87,8 +85,8 @@ export async function addNewBill(data: z.infer<typeof AddNewBillInputSchema>) {
         if (!isValidData.success) {
             return {
                 success: false,
-                msg: 'Invalid bill data provided',
-                errors: isValidData.error.flatten()
+                msg: "Invalid bill data provided",
+                errors: isValidData.error.flatten(),
             };
         }
 
@@ -104,18 +102,18 @@ export async function addNewBill(data: z.infer<typeof AddNewBillInputSchema>) {
                     patientId: true,
                     bills: {
                         where: {
-                            appointmentId: validatedData.appointmentId
-                        }
-                    }
-                }
+                            appointmentId: validatedData.appointmentId,
+                        },
+                    },
+                },
             });
 
             if (!info) {
-                return { success: false, msg: 'Appointment not found for billing.' };
+                return { success: false, msg: "Appointment not found for billing." };
             }
 
             if (info.patientId === null) {
-                return { success: false, msg: 'Patient ID missing for appointment.' };
+                return { success: false, msg: "Patient ID missing for appointment." };
             }
 
             if (!info.bills || info.bills.length === 0) {
@@ -127,22 +125,22 @@ export async function addNewBill(data: z.infer<typeof AddNewBillInputSchema>) {
                         paymentDate: new Date(),
                         discount: MAGIC_NUMBER_3,
                         amountPaid: MAGIC_NUMBER_3,
-                        totalAmount: MAGIC_NUMBER_3
-                    }
+                        totalAmount: MAGIC_NUMBER_3,
+                    },
                 });
             } else {
                 billInfo = info.bills[0];
             }
         } else {
             billInfo = await db.payment.findUnique({
-                where: { id: validatedData.billId }
+                where: { id: validatedData.billId },
             });
             // It's crucial to check if billInfo is found here.
             // If findUnique returns null/undefined, the subsequent access to billInfo.id would fail.
             if (!billInfo) {
                 return {
                     success: false,
-                    msg: 'Existing bill not found with provided ID.'
+                    msg: "Existing bill not found with provided ID.",
                 };
             }
         }
@@ -151,7 +149,7 @@ export async function addNewBill(data: z.infer<typeof AddNewBillInputSchema>) {
         if (!billInfo) {
             return {
                 success: false,
-                msg: 'Bill information could not be determined for patient bill creation.'
+                msg: "Bill information could not be determined for patient bill creation.",
             };
         }
 
@@ -162,22 +160,22 @@ export async function addNewBill(data: z.infer<typeof AddNewBillInputSchema>) {
                 serviceDate: new Date(validatedData.serviceDate),
                 quantity: Number(validatedData.quantity),
                 unitCost: Number(validatedData.unitCost),
-                totalCost: Number(validatedData.totalCost)
-            }
+                totalCost: Number(validatedData.totalCost),
+            },
         });
 
         return {
             success: true,
             error: false,
-            msg: 'Bill added successfully'
+            msg: "Bill added successfully",
         };
     } catch (error: unknown) {
-        console.error('Error adding new bill:', error);
+        console.error("Error adding new bill:", error);
 
-        let errorMessage = 'Internal Server Error';
+        let errorMessage = "Internal Server Error";
         if (error instanceof Error) {
             errorMessage = error.message;
-        } else if (typeof error === 'string') {
+        } else if (typeof error === "string") {
             errorMessage = error;
         }
 
@@ -211,7 +209,7 @@ export async function generateBill(data: z.infer<typeof PaymentSchema>) {
         ) {
             return {
                 success: false,
-                msg: 'Missing required payment data for bill generation.'
+                msg: "Missing required payment data for bill generation.",
             };
         }
 
@@ -221,29 +219,29 @@ export async function generateBill(data: z.infer<typeof PaymentSchema>) {
             data: {
                 billDate: data.billDate,
                 discount: discountAmount,
-                totalAmount: Number(data.totalAmount)
+                totalAmount: Number(data.totalAmount),
             },
-            where: { id: Number(data.id) } // Cast to number if Prisma expects number ID
+            where: { id: Number(data.id) }, // Cast to number if Prisma expects number ID
         });
 
         await db.appointment.update({
             data: {
-                status: 'COMPLETED'
+                status: "COMPLETED",
             },
-            where: { id: res.appointmentId }
+            where: { id: res.appointmentId },
         });
         return {
             success: true,
             error: false,
-            msg: 'Bill generated successfully'
+            msg: "Bill generated successfully",
         };
     } catch (error: unknown) {
-        console.error('Error generating bill:', error);
+        console.error("Error generating bill:", error);
 
-        let errorMessage = 'Internal Server Error';
+        let errorMessage = "Internal Server Error";
         if (error instanceof Error) {
             errorMessage = error.message;
-        } else if (typeof error === 'string') {
+        } else if (typeof error === "string") {
             errorMessage = error;
         }
 

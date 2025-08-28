@@ -1,4 +1,4 @@
-import type React from 'react';
+import type React from "react";
 
 type TableProps<T> = {
     columns: { header: string; key: string; className?: string }[];
@@ -8,9 +8,9 @@ type TableProps<T> = {
 
 export const Table = <T extends {}>({ columns, renderRow, data }: TableProps<T>) => {
     return (
-        <table className='mt-4 w-full'>
+        <table className="mt-4 w-full">
             <thead>
-                <tr className='text-left text-gray-500 text-sm lg:uppercase'>
+                <tr className="text-left text-gray-500 text-sm lg:uppercase">
                     {columns.map(({ header, key, className }) => (
                         <th
                             className={className}
@@ -24,7 +24,7 @@ export const Table = <T extends {}>({ columns, renderRow, data }: TableProps<T>)
 
             <tbody>
                 {data?.length < 1 && (
-                    <tr className='py-10 text-base text-gray-400'>
+                    <tr className="py-10 text-base text-gray-400">
                         <td>No Data Found</td>
                     </tr>
                 )}

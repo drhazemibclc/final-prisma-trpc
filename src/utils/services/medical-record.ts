@@ -2,14 +2,14 @@ const MAGIC_NUMBER_1 = 10;
 const MAGIC_NUMBER_2 = 200;
 const MAGIC_NUMBER_3 = 500;
 
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from "@prisma/client";
 
-import { db } from '@/server/db';
+import { db } from "@/server/db";
 
 export async function getMedicalRecords({
     page,
     limit,
-    search
+    search,
 }: {
     page: number | string;
     limit?: number | string;
@@ -25,16 +25,16 @@ export async function getMedicalRecords({
             OR: [
                 {
                     patient: {
-                        firstName: { contains: search, mode: 'insensitive' }
-                    }
+                        firstName: { contains: search, mode: "insensitive" },
+                    },
                 },
                 {
                     patient: {
-                        lastName: { contains: search, mode: 'insensitive' }
-                    }
+                        lastName: { contains: search, mode: "insensitive" },
+                    },
                 },
-                { patientId: { contains: search, mode: 'insensitive' } }
-            ]
+                { patientId: { contains: search, mode: "insensitive" } },
+            ],
         };
 
         const [data, totalRecords] = await Promise.all([
@@ -48,8 +48,8 @@ export async function getMedicalRecords({
                             dateOfBirth: true,
                             img: true,
                             colorCode: true,
-                            gender: true
-                        }
+                            gender: true,
+                        },
                     },
 
                     diagnosis: {
@@ -59,20 +59,20 @@ export async function getMedicalRecords({
                                     name: true,
                                     specialization: true,
                                     img: true,
-                                    colorCode: true
-                                }
-                            }
-                        }
+                                    colorCode: true,
+                                },
+                            },
+                        },
                     },
-                    labTest: true
+                    labTest: true,
                 },
                 skip: SKIP,
                 take: LIMIT,
-                orderBy: { createdAt: 'desc' }
+                orderBy: { createdAt: "desc" },
             }),
             db.medicalRecords.count({
-                where
-            })
+                where,
+            }),
         ]);
 
         const totalPages = Math.ceil(totalRecords / LIMIT);
@@ -83,14 +83,14 @@ export async function getMedicalRecords({
             totalRecords,
             totalPages,
             currentPage: PAGE_NUMBER,
-            status: MAGIC_NUMBER_2
+            status: MAGIC_NUMBER_2,
         };
     } catch (error) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_3
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_3,
         };
     }
 }

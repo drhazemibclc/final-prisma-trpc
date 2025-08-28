@@ -1,10 +1,10 @@
-import { bucketName, minioClient } from './minio';
+import { bucketName, minioClient } from "./minio";
 
-const URL = 'https://better.ecarry.uk';
+const URL = "https://better.ecarry.uk";
 
 export const keyToImage = (key: string | undefined | null) => {
     if (!key) {
-        return '';
+        return "";
     }
 
     return `${URL}/${key}`;
@@ -20,10 +20,10 @@ export const uploadFile = async (file: File): Promise<string> => {
     // Ensure bucket exists
     const exists = await minioClient.bucketExists(bucketName);
     if (!exists) {
-        await minioClient.makeBucket(bucketName, 'us-east-1');
+        await minioClient.makeBucket(bucketName, "us-east-1");
     }
 
     await minioClient.putObject(bucketName, fileName, buffer);
 
-    return `${process.env['NEXT_PUBLIC_MINIO_ENDPOINT']}/${bucketName}/${fileName}`;
+    return `${process.env["NEXT_PUBLIC_MINIO_ENDPOINT"]}/${bucketName}/${fileName}`;
 };

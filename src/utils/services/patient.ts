@@ -1,15 +1,15 @@
-import type { Patient } from 'prisma/generated/client';
-import db from '@/server/db';
-import { processAppointments } from '@/types';
-import { daysOfWeek } from '../';
+import type { Patient } from "prisma/generated/client";
+import db from "@/server/db";
+import { processAppointments } from "@/types";
+import { daysOfWeek } from "../";
 
 export async function getPatientDashboardStatistics(id: string) {
     try {
         if (!id) {
             return {
                 success: false,
-                message: 'No data found',
-                data: null
+                message: "No data found",
+                data: null,
             };
         }
 
@@ -21,16 +21,16 @@ export async function getPatientDashboardStatistics(id: string) {
                 lastName: true,
                 gender: true,
                 img: true,
-                colorCode: true
-            }
+                colorCode: true,
+            },
         });
 
         if (!data) {
             return {
                 success: false,
-                message: 'Patient data not found',
+                message: "Patient data not found",
                 status: 200,
-                data: null
+                data: null,
             };
         }
 
@@ -43,8 +43,8 @@ export async function getPatientDashboardStatistics(id: string) {
                         name: true,
                         img: true,
                         specialization: true,
-                        colorCode: true
-                    }
+                        colorCode: true,
+                    },
                 },
                 patient: {
                     select: {
@@ -53,12 +53,12 @@ export async function getPatientDashboardStatistics(id: string) {
                         gender: true,
                         dateOfBirth: true,
                         img: true,
-                        colorCode: true
-                    }
-                }
+                        colorCode: true,
+                    },
+                },
             },
 
-            orderBy: { appointmentDate: 'desc' }
+            orderBy: { appointmentDate: "desc" },
         });
 
         const { appointmentCounts, monthlyData } = await processAppointments(appointments);
@@ -73,19 +73,19 @@ export async function getPatientDashboardStatistics(id: string) {
                 specialization: true,
                 img: true,
                 workingDays: true,
-                colorCode: true
+                colorCode: true,
             },
             where: {
                 workingDays: {
                     some: {
                         day: {
                             equals: today,
-                            mode: 'insensitive'
-                        }
-                    }
-                }
+                            mode: "insensitive",
+                        },
+                    },
+                },
             },
-            take: 4
+            take: 4,
         });
 
         return {
@@ -96,33 +96,33 @@ export async function getPatientDashboardStatistics(id: string) {
             totalAppointments: appointments.length,
             availableDoctor,
             monthlyData,
-            status: 200
+            status: 200,
         };
     } catch (error) {
         console.log(error);
-        return { success: false, message: 'Internal Server Error', status: 500 };
+        return { success: false, message: "Internal Server Error", status: 500 };
     }
 }
 
 export async function getPatientById(id: string) {
     try {
         const patient = await db.patient.findUnique({
-            where: { id }
+            where: { id },
         });
 
         if (!patient) {
             return {
                 success: false,
-                message: 'Patient data not found',
+                message: "Patient data not found",
                 status: 200,
-                data: null
+                data: null,
             };
         }
 
         return { success: true, data: patient, status: 200 };
     } catch (error) {
         console.log(error);
-        return { success: false, message: 'Internal Server Error', status: 500 };
+        return { success: false, message: "Internal Server Error", status: 500 };
     }
 }
 
@@ -159,7 +159,7 @@ export interface PatientFullData {
     email: string | null;
     phone: string | null;
     address: string | null;
-    gender: 'MALE' | 'FEMALE' | 'OTHER'; // Adjust based on your Prisma enum
+    gender: "MALE" | "FEMALE" | "OTHER"; // Adjust based on your Prisma enum
     dateOfBirth: Date | null;
     colorCode: string | null;
     img: string | null;
@@ -176,23 +176,23 @@ export async function getPatientFullDataById(id: string): Promise<ApiResponse<Pa
         // We can leverage `Prisma.PatientGetPayload` for this.
         const patient = (await db.patient.findFirst({
             where: {
-                OR: [{ id }, { email: id }]
+                OR: [{ id }, { email: id }],
             },
             include: {
                 _count: { select: { appointments: true } },
                 appointments: {
                     select: { appointmentDate: true },
-                    orderBy: { appointmentDate: 'desc' },
-                    take: 1
-                }
-            }
+                    orderBy: { appointmentDate: "desc" },
+                    take: 1,
+                },
+            },
         })) as PatientWithAppointments | null; // Explicitly cast the result to our defined interface
 
         if (!patient) {
             return {
                 success: false,
-                message: 'Patient data not found.',
-                status: 404
+                message: "Patient data not found.",
+                status: 404,
             };
         }
 
@@ -208,16 +208,16 @@ export async function getPatientFullDataById(id: string): Promise<ApiResponse<Pa
             data: {
                 ...restPatient, // Spread the base patient data
                 totalAppointments: _count.appointments, // Use the count from _count
-                lastVisit
+                lastVisit,
             },
-            status: 200
+            status: 200,
         };
     } catch (error) {
-        console.error('Error fetching patient full data by ID:', error instanceof Error ? error.message : error);
+        console.error("Error fetching patient full data by ID:", error instanceof Error ? error.message : error);
         return {
             success: false,
-            message: 'Failed to retrieve patient data.',
-            status: 500
+            message: "Failed to retrieve patient data.",
+            status: 500,
         };
     }
 }
@@ -225,7 +225,7 @@ export async function getPatientFullDataById(id: string): Promise<ApiResponse<Pa
 export async function getAllPatients({
     page,
     limit,
-    search
+    search,
 }: {
     page: number | string;
     limit?: number | string;
@@ -241,30 +241,30 @@ export async function getAllPatients({
             db.patient.findMany({
                 where: {
                     OR: [
-                        { firstName: { contains: search, mode: 'insensitive' } },
-                        { lastName: { contains: search, mode: 'insensitive' } },
-                        { phone: { contains: search, mode: 'insensitive' } },
-                        { email: { contains: search, mode: 'insensitive' } }
-                    ]
+                        { firstName: { contains: search, mode: "insensitive" } },
+                        { lastName: { contains: search, mode: "insensitive" } },
+                        { phone: { contains: search, mode: "insensitive" } },
+                        { email: { contains: search, mode: "insensitive" } },
+                    ],
                 },
                 include: {
                     appointments: {
                         select: {
                             medical: {
                                 select: { createdAt: true, treatmentPlan: true },
-                                orderBy: { createdAt: 'desc' },
-                                take: 1
-                            }
+                                orderBy: { createdAt: "desc" },
+                                take: 1,
+                            },
                         },
-                        orderBy: { appointmentDate: 'desc' },
-                        take: 1
-                    }
+                        orderBy: { appointmentDate: "desc" },
+                        take: 1,
+                    },
                 },
                 skip: SKIP,
                 take: LIMIT,
-                orderBy: { firstName: 'asc' }
+                orderBy: { firstName: "asc" },
             }),
-            db.patient.count()
+            db.patient.count(),
         ]);
 
         const totalPages = Math.ceil(totalRecords / LIMIT);
@@ -275,10 +275,10 @@ export async function getAllPatients({
             totalRecords,
             totalPages,
             currentPage: PAGE_NUMBER,
-            status: 200
+            status: 200,
         };
     } catch (error) {
         console.log(error);
-        return { success: false, message: 'Internal Server Error', status: 500 };
+        return { success: false, message: "Internal Server Error", status: 500 };
     }
 }

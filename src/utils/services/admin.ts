@@ -3,10 +3,10 @@ const MAGIC_NUMBER_2 = 200;
 const MAGIC_NUMBER_3 = 404;
 const MAGIC_NUMBER_4 = 500;
 
-import { db } from '@/server/db';
-import { processAppointments } from '@/types/helper';
+import { db } from "@/server/db";
+import { processAppointments } from "@/types/helper";
 
-import { daysOfWeek } from '../';
+import { daysOfWeek } from "../";
 
 export async function getAdminDashboardStats() {
     try {
@@ -26,35 +26,35 @@ export async function getAdminDashboardStats() {
                             img: true,
                             colorCode: true,
                             gender: true,
-                            dateOfBirth: true
-                        }
+                            dateOfBirth: true,
+                        },
                     },
                     doctor: {
                         select: {
                             name: true,
                             img: true,
                             colorCode: true,
-                            specialization: true
-                        }
-                    }
+                            specialization: true,
+                        },
+                    },
                 },
-                orderBy: { appointmentDate: 'desc' }
+                orderBy: { appointmentDate: "desc" },
             }),
             db.doctor.findMany({
                 where: {
                     workingDays: {
-                        some: { day: { equals: today, mode: 'insensitive' } }
-                    }
+                        some: { day: { equals: today, mode: "insensitive" } },
+                    },
                 },
                 select: {
                     id: true,
                     name: true,
                     specialization: true,
                     img: true,
-                    colorCode: true
+                    colorCode: true,
                 },
-                take: MAGIC_NUMBER_1
-            })
+                take: MAGIC_NUMBER_1,
+            }),
         ]);
 
         const { appointmentCounts, monthlyData } = await processAppointments(appointments);
@@ -70,40 +70,40 @@ export async function getAdminDashboardStats() {
             monthlyData,
             last5Records,
             totalAppointments: appointments.length,
-            status: MAGIC_NUMBER_2
+            status: MAGIC_NUMBER_2,
         };
     } catch (error) {
         console.log(error);
 
-        return { error: true, message: 'Something went wrong' };
+        return { error: true, message: "Something went wrong" };
     }
 }
 
 export async function getServices() {
     try {
         const data = await db.services.findMany({
-            orderBy: { serviceName: 'asc' }
+            orderBy: { serviceName: "asc" },
         });
 
         if (!data) {
             return {
                 success: false,
-                message: 'Data not found',
+                message: "Data not found",
                 status: MAGIC_NUMBER_3,
-                data: []
+                data: [],
             };
         }
 
         return {
             success: true,
-            data
+            data,
         };
     } catch (error) {
         console.log(error);
         return {
             success: false,
-            message: 'Internal Server Error',
-            status: MAGIC_NUMBER_4
+            message: "Internal Server Error",
+            status: MAGIC_NUMBER_4,
         };
     }
 }

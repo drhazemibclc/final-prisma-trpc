@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import type { ComponentProps } from 'react';
-import { useCallback, useMemo, useState } from 'react';
-import type { Control, FieldValues, Path } from 'react-hook-form';
+import type { ComponentProps } from "react";
+import { useCallback, useMemo, useState } from "react";
+import type { Control, FieldValues, Path } from "react-hook-form";
 
-import LucideIcon from '@/components/common/lucide';
-import { FormControl, FormField, FormItem } from '@/components/ui/form';
-import { Input as SCN_Input } from '@/components/ui/form/input';
-import { cn } from '@/lib/utils';
+import LucideIcon from "@/components/common/lucide";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input as SCN_Input } from "@/components/ui/form/input";
+import { cn } from "@/lib/utils";
 
-import FormErrorMessage from './shared/error-message';
-import FormLabel from './shared/label';
+import FormErrorMessage from "./shared/error-message";
+import FormLabel from "./shared/label";
 
-type TInput<TFormSchema extends FieldValues> = ComponentProps<'input'> & {
+type TInput<TFormSchema extends FieldValues> = ComponentProps<"input"> & {
     control: Control<TFormSchema>;
     name: Path<TFormSchema>;
     label?: string;
@@ -30,7 +30,7 @@ export default function Input<TFormSchema extends FieldValues>({
     ...otherProperties
 }: TInput<TFormSchema>) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const isPassword = useMemo(() => type === 'password', [type]);
+    const isPassword = useMemo(() => type === "password", [type]);
     const onPasswordButtonClick = useCallback(() => {
         setIsPasswordVisible(!isPasswordVisible);
     }, [isPasswordVisible]);
@@ -40,18 +40,18 @@ export default function Input<TFormSchema extends FieldValues>({
             control={control}
             name={name}
             render={({ field }) => (
-                <FormItem className={cn('w-full', className)}>
+                <FormItem className={cn("w-full", className)}>
                     <FormLabel
                         isRequired={isRequired}
                         label={label}
                         name={name}
                     />
-                    <div className='relative'>
+                    <div className="relative">
                         <FormControl>
                             <SCN_Input
-                                className='pr-10.5 placeholder:italic'
+                                className="pr-10.5 placeholder:italic"
                                 disabled={disabled}
-                                type={isPassword && isPasswordVisible ? 'text' : type}
+                                type={isPassword && isPasswordVisible ? "text" : type}
                                 {...otherProperties}
                                 {...field}
                             />
@@ -59,14 +59,14 @@ export default function Input<TFormSchema extends FieldValues>({
 
                         {isPassword && (
                             <button
-                                aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
-                                className='-translate-y-1/2 absolute top-1/2 right-3 text-muted-foreground disabled:pointer-events-none disabled:opacity-50'
+                                aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+                                className="-translate-y-1/2 absolute top-1/2 right-3 text-muted-foreground disabled:pointer-events-none disabled:opacity-50"
                                 disabled={disabled}
                                 onClick={onPasswordButtonClick}
                                 tabIndex={-1}
-                                type='button'
+                                type="button"
                             >
-                                <LucideIcon name={isPasswordVisible ? 'EyeOff' : 'Eye'} />
+                                <LucideIcon name={isPasswordVisible ? "EyeOff" : "Eye"} />
                             </button>
                         )}
                     </div>

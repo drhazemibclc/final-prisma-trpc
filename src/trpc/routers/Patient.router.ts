@@ -1,15 +1,15 @@
-import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
-import { createNewPatient, updatePatient } from '@/actions/patient';
-import { PatientFormSchema } from '@/lib/schema';
-import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+import { createNewPatient, updatePatient } from "@/actions/patient";
+import { PatientFormSchema } from "@/lib/schema";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
     getAllPatients,
     getPatientById,
     getPatientDashboardStatistics,
     getPatientFullDataById,
-    type PatientFullData
-} from '@/utils/services/patient';
+    type PatientFullData,
+} from "@/utils/services/patient";
 
 export const patientRouter = createTRPCRouter({
     getPatientDashboardStatistics: protectedProcedure.input(z.string()).query(async ({ input: patientId }) => {
@@ -18,8 +18,8 @@ export const patientRouter = createTRPCRouter({
         } catch (error) {
             console.error(error);
             throw new TRPCError({
-                code: 'INTERNAL_SERVER_ERROR',
-                message: 'Unable to fetch dashboard statistics'
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Unable to fetch dashboard statistics",
             });
         }
     }),
@@ -30,8 +30,8 @@ export const patientRouter = createTRPCRouter({
         } catch (error) {
             console.error(error);
             throw new TRPCError({
-                code: 'INTERNAL_SERVER_ERROR',
-                message: 'Unable to fetch patient by ID'
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Unable to fetch patient by ID",
             });
         }
     }),
@@ -43,16 +43,16 @@ export const patientRouter = createTRPCRouter({
                 const response = await getPatientFullDataById(data);
                 if (!response.success || !response.data) {
                     throw new TRPCError({
-                        code: 'NOT_FOUND',
-                        message: response.message ?? 'Patient not found'
+                        code: "NOT_FOUND",
+                        message: response.message ?? "Patient not found",
                     });
                 }
                 return response.data;
             } catch (error) {
                 console.error(error);
                 throw new TRPCError({
-                    code: 'INTERNAL_SERVER_ERROR',
-                    message: 'Unable to fetch full patient data'
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: "Unable to fetch full patient data",
                 });
             }
         }),
@@ -61,7 +61,7 @@ export const patientRouter = createTRPCRouter({
             z.object({
                 page: z.union([z.string(), z.number()]).transform(v => Math.max(1, Number(v))),
                 limit: z.union([z.string(), z.number()]).transform(Number).optional(),
-                search: z.string().optional()
+                search: z.string().optional(),
             })
         )
         .query(async ({ input }) => {
@@ -70,8 +70,8 @@ export const patientRouter = createTRPCRouter({
             } catch (error) {
                 console.error(error);
                 throw new TRPCError({
-                    code: 'INTERNAL_SERVER_ERROR',
-                    message: 'Unable to fetch patients'
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: "Unable to fetch patients",
                 });
             }
         }),
@@ -80,7 +80,7 @@ export const patientRouter = createTRPCRouter({
         .input(
             z.object({
                 pid: z.string(),
-                data: PatientFormSchema
+                data: PatientFormSchema,
             })
         )
         .mutation(async ({ input }) => {
@@ -92,7 +92,7 @@ export const patientRouter = createTRPCRouter({
         .input(
             z.object({
                 pid: z.string(),
-                data: PatientFormSchema // same schema used on the server
+                data: PatientFormSchema, // same schema used on the server
             })
         )
         .mutation(async ({ input }) => {
@@ -100,9 +100,9 @@ export const patientRouter = createTRPCRouter({
 
             const payload = {
                 ...data,
-                dateOfBirth: new Date(data.dateOfBirth)
+                dateOfBirth: new Date(data.dateOfBirth),
             };
 
             return await updatePatient(payload, pid);
-        })
+        }),
 });

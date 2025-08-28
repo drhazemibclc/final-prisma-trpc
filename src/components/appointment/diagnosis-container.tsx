@@ -1,17 +1,17 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/auth';
-import db from '@/server/db';
-import { checkRole } from '@/utils/roles';
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/auth";
+import db from "@/server/db";
+import { checkRole } from "@/utils/roles";
 
-import { AddDiagnosis } from '../dialogs/add-diagnosis';
-import { NoDataFound } from '../no-data-found';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { MedicalHistoryCard } from './medical-history-card';
+import { AddDiagnosis } from "../dialogs/add-diagnosis";
+import { NoDataFound } from "../no-data-found";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { MedicalHistoryCard } from "./medical-history-card";
 
 export const DiagnosisContainer = async ({
     patientId,
     doctorId,
-    id
+    id,
 }: {
     patientId: string;
     doctorId: string;
@@ -20,27 +20,27 @@ export const DiagnosisContainer = async ({
     const session = await getSession();
     const userId = session?.user.id;
 
-    if (!userId) redirect('/signin');
+    if (!userId) redirect("/signin");
 
     const data = await db.medicalRecords.findFirst({
         where: { appointmentId: Number(id) },
         include: {
             diagnosis: {
                 include: { doctor: true },
-                orderBy: { createdAt: 'desc' }
-            }
+                orderBy: { createdAt: "desc" },
+            },
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: "desc" },
     });
 
     const diagnosis = data?.diagnosis || null;
-    const isPatient = await checkRole(session, 'PATIENT');
+    const isPatient = await checkRole(session, "PATIENT");
 
     return (
         <div>
             {diagnosis?.length === 0 || !diagnosis ? (
-                <div className='mt-20 flex flex-col items-center justify-center'>
-                    <NoDataFound note='No diagnosis found' />
+                <div className="mt-20 flex flex-col items-center justify-center">
+                    <NoDataFound note="No diagnosis found" />
                     <AddDiagnosis
                         appointmentId={id}
                         doctorId={doctorId}
@@ -50,9 +50,9 @@ export const DiagnosisContainer = async ({
                     />
                 </div>
             ) : (
-                <section className='space-y-6'>
+                <section className="space-y-6">
                     <Card>
-                        <CardHeader className='flex flex-row items-center justify-between'>
+                        <CardHeader className="flex flex-row items-center justify-between">
                             <CardTitle>Medical Records</CardTitle>
 
                             {!isPatient && (
@@ -66,7 +66,7 @@ export const DiagnosisContainer = async ({
                             )}
                         </CardHeader>
 
-                        <CardContent className='space-y-8'>
+                        <CardContent className="space-y-8">
                             {diagnosis?.map((record, id) => (
                                 <div key={record.id}>
                                     <MedicalHistoryCard

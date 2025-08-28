@@ -1,10 +1,10 @@
 const _MAGIC_NUMBER_1 = 46;
 const _MAGIC_NUMBER_2 = 49;
 
-import { endOfMonth, format, getMonth, startOfYear } from 'date-fns';
+import { endOfMonth, format, getMonth, startOfYear } from "date-fns";
 
 // --- Utility types and functions from your original file ---
-export type AppointmentStatus = 'CANCELLED' | 'COMPLETED' | 'PENDING' | 'SCHEDULED';
+export type AppointmentStatus = "CANCELLED" | "COMPLETED" | "PENDING" | "SCHEDULED";
 
 type Appointment = {
     appointmentDate: Date; // Renamed from appointment_date to match Drizzle schema
@@ -12,7 +12,7 @@ type Appointment = {
 };
 
 function isValidStatus(status: string): status is AppointmentStatus {
-    return ['CANCELLED', 'COMPLETED', 'PENDING', 'SCHEDULED'].includes(status);
+    return ["CANCELLED", "COMPLETED", "PENDING", "SCHEDULED"].includes(status);
 }
 
 const initializeMonthlyData = () => {
@@ -21,7 +21,7 @@ const initializeMonthlyData = () => {
     const months = Array.from({ length: getMonth(new Date()) + 1 }, (_, index) => ({
         appointment: 0,
         completed: 0,
-        name: format(new Date(this_year, index), 'MMM')
+        name: format(new Date(this_year, index), "MMM"),
     }));
     return months;
 };
@@ -42,7 +42,7 @@ export const processAppointments = async (appointments: Appointment[]) => {
             ) {
                 monthlyData[monthIndex].appointment += 1; // Line MAGIC_NUMBER_1
                 // ...
-                if (status === 'COMPLETED') {
+                if (status === "COMPLETED") {
                     monthlyData[monthIndex].completed += 1; // Line MAGIC_NUMBER_2
                 }
             }
@@ -58,7 +58,7 @@ export const processAppointments = async (appointments: Appointment[]) => {
             CANCELLED: 0,
             COMPLETED: 0,
             PENDING: 0,
-            SCHEDULED: 0
+            SCHEDULED: 0,
         }
     );
 

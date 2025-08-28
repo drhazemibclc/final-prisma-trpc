@@ -1,5 +1,5 @@
-import { FormMessage } from '@/components/ui/form';
-import { cn } from '@/lib/utils';
+import { FormMessage } from "@/components/ui/form";
+import { cn } from "@/lib/utils";
 
 type TFormErrorMessage = {
     name: string;
@@ -9,7 +9,7 @@ type TFormErrorMessage = {
 export default function FormErrorMessage({ name, className }: Readonly<TFormErrorMessage>) {
     return (
         <FormMessage
-            className={cn('leading-none', className)}
+            className={cn("leading-none", className)}
             data-testid={`${name}-error-message`}
         />
     );

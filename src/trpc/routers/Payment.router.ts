@@ -1,19 +1,19 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-import { addDiagnosis, addNewBill, generateBill } from '@/actions/medical';
-import { AddNewBillInputSchema, DiagnosisSchema, PaymentSchema } from '@/lib/schema';
-import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'; // adjust import path
-import { getPaymentRecords } from '@/utils/services/payments'; // adjust to your service function path
+import { addDiagnosis, addNewBill, generateBill } from "@/actions/medical";
+import { AddNewBillInputSchema, DiagnosisSchema, PaymentSchema } from "@/lib/schema";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"; // adjust import path
+import { getPaymentRecords } from "@/utils/services/payments"; // adjust to your service function path
 
 // Input schema for pagination and search
 const GetPaymentRecordsInputSchema = z.object({
     page: z.number().int().min(1),
     limit: z.number().int().min(1).optional(),
-    search: z.string().optional()
+    search: z.string().optional(),
 });
 
 const AddDiagnosisInputSchema = DiagnosisSchema.extend({
-    appointmentId: z.string() // string id of appointment
+    appointmentId: z.string(), // string id of appointment
 });
 
 export const paymentsRouter = createTRPCRouter({
@@ -26,19 +26,19 @@ export const paymentsRouter = createTRPCRouter({
 
         const result = await addDiagnosis(diagnosisData, appointmentId);
 
-        if (!result.success) throw new Error(result.message || 'Failed to add diagnosis');
+        if (!result.success) throw new Error(result.message || "Failed to add diagnosis");
         return result;
     }),
 
     addNewBill: protectedProcedure.input(AddNewBillInputSchema).mutation(async ({ input }) => {
         const result = await addNewBill(input);
-        if (!result.success) throw new Error(result.msg || 'Failed to add bill');
+        if (!result.success) throw new Error(result.msg || "Failed to add bill");
         return result;
     }),
 
     generateBill: protectedProcedure.input(PaymentSchema).mutation(async ({ input }) => {
         const result = await generateBill(input);
-        if (!result.success) throw new Error(result.msg || 'Failed to generate bill');
+        if (!result.success) throw new Error(result.msg || "Failed to generate bill");
         return result;
-    })
+    }),
 });

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
     CartesianGrid,
     Legend,
@@ -10,15 +10,15 @@ import {
     ResponsiveContainer,
     Tooltip,
     XAxis,
-    YAxis
-} from 'recharts';
+    YAxis,
+} from "recharts";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Types
 export type GrowthChartsProps = {
     patientData: {
-        gender: 'MALE' | 'FEMALE';
+        gender: "MALE" | "FEMALE";
         measurements: {
             ageInMonths: number;
             weight?: number;
@@ -72,7 +72,7 @@ export function GrowthCharts({ patientData }: GrowthChartsProps) {
             SD2pos: std.sd2pos,
             SD3neg: std.sd3neg,
             SD3pos: std.sd3pos,
-            patientWeight: patientEntry?.weight // No need for ?? null here if we filter later
+            patientWeight: patientEntry?.weight, // No need for ?? null here if we filter later
         };
     });
 
@@ -81,29 +81,29 @@ export function GrowthCharts({ patientData }: GrowthChartsProps) {
             <CardHeader>
                 <CardTitle>Growth Chart (Weight-for-Age)</CardTitle>
             </CardHeader>
-            <CardContent className='h-96'>
+            <CardContent className="h-96">
                 {chartData.length === 0 ? (
-                    <p className='text-muted-foreground'>Loading growth data...</p>
+                    <p className="text-muted-foreground">Loading growth data...</p>
                 ) : (
                     <ResponsiveContainer
-                        height='100%'
-                        width='100%'
+                        height="100%"
+                        width="100%"
                     >
                         <LineChart data={chartData}>
-                            <CartesianGrid strokeDasharray='3 3' />
+                            <CartesianGrid strokeDasharray="3 3" />
                             <XAxis
-                                dataKey='age'
+                                dataKey="age"
                                 label={{
-                                    value: 'Age (months)',
-                                    position: 'insideBottom',
-                                    offset: -5
+                                    value: "Age (months)",
+                                    position: "insideBottom",
+                                    offset: -5,
                                 }}
                             />
                             <YAxis
                                 label={{
-                                    value: 'Weight (kg)',
+                                    value: "Weight (kg)",
                                     angle: -90,
-                                    position: 'insideLeft'
+                                    position: "insideLeft",
                                 }}
                             />
                             <Tooltip />
@@ -111,46 +111,46 @@ export function GrowthCharts({ patientData }: GrowthChartsProps) {
 
                             {/* WHO Standard Curves */}
                             <Line
-                                dataKey='SD0'
+                                dataKey="SD0"
                                 dot={false}
-                                name='Median'
-                                stroke='#000'
+                                name="Median"
+                                stroke="#000"
                             />
                             <Line
-                                dataKey='SD1neg'
+                                dataKey="SD1neg"
                                 dot={false}
-                                name='-1 SD'
-                                stroke='#ffa500'
+                                name="-1 SD"
+                                stroke="#ffa500"
                             />
                             <Line
-                                dataKey='SD1pos'
+                                dataKey="SD1pos"
                                 dot={false}
-                                name='+1 SD'
-                                stroke='#ffa500'
+                                name="+1 SD"
+                                stroke="#ffa500"
                             />
                             <Line
-                                dataKey='SD2neg'
+                                dataKey="SD2neg"
                                 dot={false}
-                                name='-2 SD'
-                                stroke='#ff0000'
+                                name="-2 SD"
+                                stroke="#ff0000"
                             />
                             <Line
-                                dataKey='SD2pos'
+                                dataKey="SD2pos"
                                 dot={false}
-                                name='+2 SD'
-                                stroke='#ff0000'
+                                name="+2 SD"
+                                stroke="#ff0000"
                             />
                             <Line
-                                dataKey='SD3neg'
+                                dataKey="SD3neg"
                                 dot={false}
-                                name='-3 SD'
-                                stroke='#800000'
+                                name="-3 SD"
+                                stroke="#800000"
                             />
                             <Line
-                                dataKey='SD3pos'
+                                dataKey="SD3pos"
                                 dot={false}
-                                name='+3 SD'
-                                stroke='#800000'
+                                name="+3 SD"
+                                stroke="#800000"
                             />
 
                             {/* Patient Points */}
@@ -158,11 +158,11 @@ export function GrowthCharts({ patientData }: GrowthChartsProps) {
                                 .filter(d => d.patientWeight !== undefined && d.patientWeight !== null) // Refined filter
                                 .map(d => (
                                     <ReferenceDot
-                                        fill='#2e86de'
+                                        fill="#2e86de"
                                         key={d.SD0}
-                                        label={{ value: 'Patient', position: 'top' }}
+                                        label={{ value: "Patient", position: "top" }}
                                         r={5}
-                                        stroke='white'
+                                        stroke="white"
                                         x={d.age}
                                         y={d.patientWeight as number} // FIX 2: Assert patientWeight as number for ReferenceDot
                                     />

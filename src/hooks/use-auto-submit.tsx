@@ -1,6 +1,6 @@
-import { debounce } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
-import type { FieldValues, UseFormTrigger, UseFormWatch } from 'react-hook-form';
+import { debounce } from "lodash";
+import { useEffect, useMemo, useState } from "react";
+import type { FieldValues, UseFormTrigger, UseFormWatch } from "react-hook-form";
 
 interface AutoSubmitProps<T extends FieldValues> {
     trigger: UseFormTrigger<T>;
@@ -18,7 +18,7 @@ export const useAutoSubmit = <T extends FieldValues>({
     watch,
     onSubmit,
     onValidationFailed,
-    debounceTime = 300
+    debounceTime = 300,
 }: AutoSubmitProps<T>) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,7 +30,7 @@ export const useAutoSubmit = <T extends FieldValues>({
 
     useEffect(() => {
         const subscription = watch((_data, info) => {
-            if (info?.type !== 'change') return;
+            if (info?.type !== "change") return;
             setIsSubmitting(true);
             trigger()
                 .then(valid => {

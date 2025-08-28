@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { PlusIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import type { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
 
-import { VitalSignsSchema } from '@/lib/schema'; // VERIFY THIS IS THE LATEST VERSION
-import { trpc } from '@/trpc/client';
+import { VitalSignsSchema } from "@/lib/schema"; // VERIFY THIS IS THE LATEST VERSION
+import { trpc } from "@/trpc/client";
 
-import { CustomInput } from '../custom-input';
-import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Form } from '../ui/form';
+import { CustomInput } from "../custom-input";
+import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Form } from "../ui/form";
 
 type AddVitalSignsProps = {
     patientId: string;
@@ -48,31 +48,31 @@ export const AddVitalSigns = ({ patientId, doctorId, appointmentId, medicalId }:
             respiratoryRate: undefined,
             oxygenSaturation: undefined,
             weight: 5,
-            height: 59
-        } as VitalSignsFormData // Explicitly cast to VitalSignsFormData to help TypeScript.
+            height: 59,
+        } as VitalSignsFormData, // Explicitly cast to VitalSignsFormData to help TypeScript.
     });
 
     const { mutateAsync: addVitalSignsMutation, isPending: isSubmitting } = trpc.appointment.addVitalSigns.useMutation({
         onSuccess: res => {
             if (res.success) {
-                toast.success(res.msg || 'Vital signs added successfully!');
+                toast.success(res.msg || "Vital signs added successfully!");
                 form.reset();
                 setIsDialogOpen(false);
                 router.refresh();
             } else {
-                toast.error(res.msg || 'Failed to add vital signs.');
+                toast.error(res.msg || "Failed to add vital signs.");
             }
         },
         onError: error => {
-            console.error('Error adding vital signs:', error);
-            toast.error(error.message || 'Something went wrong. Please try again.');
-        }
+            console.error("Error adding vital signs:", error);
+            toast.error(error.message || "Something went wrong. Please try again.");
+        },
     });
 
     const handleOnSubmit = async (data: VitalSignsFormData) => {
         try {
             if (!(patientId && doctorId) || appointmentId === undefined || appointmentId === null) {
-                toast.error('Missing required IDs (Patient, Doctor, or Appointment).');
+                toast.error("Missing required IDs (Patient, Doctor, or Appointment).");
                 return;
             }
 
@@ -83,13 +83,13 @@ export const AddVitalSigns = ({ patientId, doctorId, appointmentId, medicalId }:
                 ...data,
                 appointmentId,
                 doctorId,
-                patientId: '',
+                patientId: "",
                 medicalId: 0,
-                weight: 0
+                weight: 0,
             });
         } catch (error) {
-            console.error('Unexpected error during vital signs submission:', error);
-            toast.error('An unexpected error occurred during submission. Please try again.');
+            console.error("Unexpected error during vital signs submission:", error);
+            toast.error("An unexpected error occurred during submission. Please try again.");
         }
     };
 
@@ -100,14 +100,14 @@ export const AddVitalSigns = ({ patientId, doctorId, appointmentId, medicalId }:
         >
             <DialogTrigger asChild>
                 <Button
-                    className='font-normal text-sm'
-                    size='sm'
-                    variant='outline'
+                    className="font-normal text-sm"
+                    size="sm"
+                    variant="outline"
                 >
                     <PlusIcon
-                        className='text-gray-500'
+                        className="text-gray-500"
                         size={22}
-                    />{' '}
+                    />{" "}
                     Add Vital Signs
                 </Button>
             </DialogTrigger>
@@ -120,83 +120,83 @@ export const AddVitalSigns = ({ patientId, doctorId, appointmentId, medicalId }:
 
                 <Form {...form}>
                     <form
-                        className='space-y-8'
+                        className="space-y-8"
                         onSubmit={form.handleSubmit(handleOnSubmit)}
                     >
-                        <div className='flex items-center gap-4'>
+                        <div className="flex items-center gap-4">
                             <CustomInput
                                 control={form.control}
-                                label='Body Temperature (°C)'
-                                name='bodyTemperature'
-                                placeholder='e.g.: 37.5'
-                                type='input'
+                                label="Body Temperature (°C)"
+                                name="bodyTemperature"
+                                placeholder="e.g.: 37.5"
+                                type="input"
                             />
                             <CustomInput
                                 control={form.control}
-                                label='Heart Rate (BPM)'
-                                name='heartRate'
-                                placeholder='e.g.: 54-123'
-                                type='input'
-                            />
-                        </div>
-
-                        <div className='flex items-center gap-4'>
-                            <CustomInput
-                                control={form.control}
-                                label='Systolic BP'
-                                name='systolic'
-                                placeholder='e.g.: 120'
-                                type='input'
-                            />
-                            <CustomInput
-                                control={form.control}
-                                label='Diastolic BP'
-                                name='diastolic'
-                                placeholder='e.g.: 80'
-                                type='input'
+                                label="Heart Rate (BPM)"
+                                name="heartRate"
+                                placeholder="e.g.: 54-123"
+                                type="input"
                             />
                         </div>
 
-                        <div className='flex items-center gap-4'>
+                        <div className="flex items-center gap-4">
                             <CustomInput
                                 control={form.control}
-                                label='Weight (Kg)'
-                                name='weight'
-                                placeholder='e.g.: 80'
-                                type='input'
+                                label="Systolic BP"
+                                name="systolic"
+                                placeholder="e.g.: 120"
+                                type="input"
                             />
                             <CustomInput
                                 control={form.control}
-                                label='Height (Cm)'
-                                name='height'
-                                placeholder='e.g.: 175'
-                                type='input'
+                                label="Diastolic BP"
+                                name="diastolic"
+                                placeholder="e.g.: 80"
+                                type="input"
                             />
                         </div>
 
-                        <div className='flex items-center gap-4'>
+                        <div className="flex items-center gap-4">
                             <CustomInput
                                 control={form.control}
-                                label='Respiratory Rate'
-                                name='respiratoryRate'
-                                placeholder='Optional'
-                                type='input'
+                                label="Weight (Kg)"
+                                name="weight"
+                                placeholder="e.g.: 80"
+                                type="input"
                             />
                             <CustomInput
                                 control={form.control}
-                                label='Oxygen Saturation'
-                                name='oxygenSaturation'
-                                placeholder='Optional'
-                                type='input'
+                                label="Height (Cm)"
+                                name="height"
+                                placeholder="e.g.: 175"
+                                type="input"
+                            />
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <CustomInput
+                                control={form.control}
+                                label="Respiratory Rate"
+                                name="respiratoryRate"
+                                placeholder="Optional"
+                                type="input"
+                            />
+                            <CustomInput
+                                control={form.control}
+                                label="Oxygen Saturation"
+                                name="oxygenSaturation"
+                                placeholder="Optional"
+                                type="input"
                             />
                         </div>
 
                         <Button
-                            className='w-full'
+                            className="w-full"
                             disabled={isSubmitting}
-                            type='submit'
+                            type="submit"
                         >
-                            {isSubmitting ? 'Submitting...' : 'Submit'}
+                            {isSubmitting ? "Submitting..." : "Submit"}
                         </Button>
                     </form>
                 </Form>

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useCallback, useContext, useMemo } from 'react'; // Import React
-import type { Session, User } from '@/lib/auth';
-import { allRoles } from '@/lib/auth/permissions';
+import React, { useCallback, useContext, useMemo } from "react"; // Import React
+import type { Session, User } from "@/lib/auth";
+import { allRoles } from "@/lib/auth/permissions";
 
 // Define the shape of a User with a role
 type UserWithRole = User & { role: string };
@@ -40,14 +40,14 @@ export function useAuth(): AuthSession {
     const context = useContext(AuthContext);
 
     if (context === null) {
-        throw new Error('useAuth must be used within an AuthProvider');
+        throw new Error("useAuth must be used within an AuthProvider");
     }
 
     return context; // Return the context directly, which is AuthSession
 }
 
 // Define the type for the authorize function from the roles
-type AuthorizeFunction = (typeof allRoles)[keyof typeof allRoles]['authorize'];
+type AuthorizeFunction = (typeof allRoles)[keyof typeof allRoles]["authorize"];
 
 /**
  * Custom hook for access control, providing utilities to check roles and permissions.
@@ -59,7 +59,7 @@ export function useAccessControl() {
     // Memoize the roles to prevent unnecessary re-renders
     const roles = useMemo(() => {
         // Ensure the role string is split and cast correctly
-        return (auth?.user?.role?.split(',') as Array<keyof typeof allRoles>) || [];
+        return (auth?.user?.role?.split(",") as Array<keyof typeof allRoles>) || [];
     }, [auth?.user?.role]);
 
     // Memoize hasPermission for performance
@@ -95,6 +95,6 @@ export function useAccessControl() {
         roles,
         hasPermission,
         hasRole,
-        getRolePermissions
+        getRolePermissions,
     };
 }

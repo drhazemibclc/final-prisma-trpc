@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import type { UseChatHelpers } from '@ai-sdk/react';
-import type { UIMessage } from 'ai';
-import { useEffect, useRef } from 'react';
+import type { UseChatHelpers } from "@ai-sdk/react";
+import type { UIMessage } from "ai";
+import { useEffect, useRef } from "react";
 
-export type DataPart = { type: 'append-message'; message: string };
+export type DataPart = { type: "append-message"; message: string };
 
 interface Props {
     autoResume: boolean;
     initialMessages: UIMessage[];
-    experimental_resume: UseChatHelpers<UIMessage>['resumeStream'];
+    experimental_resume: UseChatHelpers<UIMessage>["resumeStream"];
     data: DataPart[];
-    setMessages: UseChatHelpers<UIMessage>['setMessages'];
+    setMessages: UseChatHelpers<UIMessage>["setMessages"];
 }
 
 export function useAutoResume({ autoResume, initialMessages, experimental_resume, data, setMessages }: Props) {
@@ -22,14 +22,14 @@ export function useAutoResume({ autoResume, initialMessages, experimental_resume
         if (!autoResume || hasResumed.current) return;
 
         const mostRecentMessage = initialMessages.at(-1);
-        if (mostRecentMessage?.role === 'user') {
+        if (mostRecentMessage?.role === "user") {
             hasResumed.current = true;
 
             const timer = setTimeout(() => {
                 try {
                     experimental_resume();
                 } catch (error) {
-                    console.error('Error resuming stream:', error);
+                    console.error("Error resuming stream:", error);
                     hasResumed.current = false;
                 }
             }, 100);
@@ -47,7 +47,7 @@ export function useAutoResume({ autoResume, initialMessages, experimental_resume
 
                 if (processedDataIds.current.has(dataId)) return;
 
-                if (item.type === 'append-message') {
+                if (item.type === "append-message") {
                     const message = JSON.parse(item.message) as UIMessage;
 
                     const messageExists = initialMessages.some(m => m.id === message.id);
@@ -60,7 +60,7 @@ export function useAutoResume({ autoResume, initialMessages, experimental_resume
                 }
             });
         } catch (error) {
-            console.error('Error processing resume data:', error);
+            console.error("Error processing resume data:", error);
         }
     }, [data, initialMessages, setMessages]);
 

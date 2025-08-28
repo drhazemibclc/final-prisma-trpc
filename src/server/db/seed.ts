@@ -1,8 +1,8 @@
-import { faker } from '@faker-js/faker';
-import { PrismaClient } from '@prisma/client';
+import { faker } from "@faker-js/faker";
+import { PrismaClient } from "@prisma/client";
 
-import 'dotenv/config';
-import { type Prisma, Role, ServiceCategory } from 'prisma/generated/client';
+import "dotenv/config";
+import { type Prisma, Role, ServiceCategory } from "prisma/generated/client";
 
 const db = new PrismaClient();
 // Helper function to get random enum value
@@ -34,7 +34,7 @@ async function clearExistingData() {
 
 async function seedInternalUsers(NUM_USERS_TO_GENERATE: number) {
     const usersToCreate: Prisma.UserCreateManyInput[] = Array.from({
-        length: NUM_USERS_TO_GENERATE
+        length: NUM_USERS_TO_GENERATE,
     }).map(() => ({
         id: faker.string.uuid(),
         email: faker.internet.email(),
@@ -42,27 +42,27 @@ async function seedInternalUsers(NUM_USERS_TO_GENERATE: number) {
         emailVerified: faker.datatype.boolean(),
         createdAt: faker.date.anytime(),
         updatedAt: faker.date.recent(),
-        role: getRandomEnumValue(Role)
+        role: getRandomEnumValue(Role),
     }));
     const internalUsers = await db.user.createManyAndReturn({
-        data: usersToCreate
+        data: usersToCreate,
     });
     return internalUsers;
 }
 
 async function seedServices(NUM_SERVICES: number) {
     const servicesData: Prisma.ServicesCreateInput[] = Array.from({
-        length: NUM_SERVICES
+        length: NUM_SERVICES,
     }).map(() => ({
         serviceName: faker.commerce.productName(),
         description: faker.commerce.productDescription(),
         price: Number.parseFloat(faker.commerce.price({ min: 10, max: 500, dec: 2 })),
         category: getRandomEnumValue(ServiceCategory),
         duration: faker.number.int({ min: 15, max: 120 }),
-        isAvailable: faker.datatype.boolean()
+        isAvailable: faker.datatype.boolean(),
     }));
     const services = await db.services.createManyAndReturn({
-        data: servicesData
+        data: servicesData,
     });
     return services;
 }
@@ -71,7 +71,7 @@ async function seedServices(NUM_SERVICES: number) {
 // For brevity, only a few are shown here. You should extract each major block into its own function.
 
 async function main() {
-    console.log('Start seeding...');
+    console.log("Start seeding...");
     await clearExistingData();
 
     const NUM_USERS_TO_GENERATE = 70;
@@ -96,7 +96,7 @@ async function main() {
     // etc.
 
     // After all seeding steps
-    console.log('Seeding finished.');
+    console.log("Seeding finished.");
 }
 
 main()

@@ -1,8 +1,8 @@
-import z from 'zod';
+import z from "zod";
 
-import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
-const roleSchema = z.enum(['patient', 'doctor', 'admin', 'staff']);
+const roleSchema = z.enum(["patient", "doctor", "admin", "staff"]);
 
 export const authRouter = createTRPCRouter({
     getSession: protectedProcedure.query(({ ctx }) => {
@@ -13,7 +13,7 @@ export const authRouter = createTRPCRouter({
 
     // Get current user role as lowercase string, default to "patient"
     getRole: protectedProcedure.query(({ ctx }) => {
-        const role = ctx.session?.user?.role?.toLowerCase() || 'patient';
+        const role = ctx.session?.user?.role?.toLowerCase() || "patient";
         return role;
     }),
 
@@ -21,5 +21,5 @@ export const authRouter = createTRPCRouter({
     checkRole: protectedProcedure.input(roleSchema).query(({ input: role, ctx }) => {
         const userRole = ctx.session?.user?.role?.toLowerCase();
         return userRole === role.toLowerCase();
-    })
+    }),
 });

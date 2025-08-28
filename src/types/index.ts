@@ -1,17 +1,17 @@
 // src/types/prisma-utils.ts (or a suitable location for shared types)
 
-export * from './admin';
-export * from './appointment';
-export * from './data-types';
-export * from './doctor';
-export * from './helper';
-export * from './patients';
-export * from './payment';
-export * from './query';
-export * from './records';
-export * from './staff';
-export * from './user';
-export * from './vitals';
+export * from "./admin";
+export * from "./appointment";
+export * from "./data-types";
+export * from "./doctor";
+export * from "./helper";
+export * from "./patients";
+export * from "./payment";
+export * from "./query";
+export * from "./records";
+export * from "./staff";
+export * from "./user";
+export * from "./vitals";
 export type SearchParamsProps = {
     searchParams?: Promise<{ [key: string]: string | undefined }>;
 };

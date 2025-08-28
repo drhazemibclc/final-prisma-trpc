@@ -10,10 +10,10 @@ export type User = {
 };
 
 export enum UserRole {
-    DOCTOR = 'doctor',
-    PATIENT = 'patient',
-    ADMIN = 'admin',
-    STAFF = 'staff'
+    DOCTOR = "doctor",
+    PATIENT = "patient",
+    ADMIN = "admin",
+    STAFF = "staff",
 }
 export type Availability = {
     day: string;

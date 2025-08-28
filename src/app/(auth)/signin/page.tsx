@@ -1,16 +1,16 @@
-import { headers } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-import { auth } from '@/lib/auth';
-import { SignInView } from './signin-form';
+import { auth } from "@/lib/auth";
+import { SignInView } from "./signin-form";
 
 const page = async () => {
     const session = await auth.api.getSession({
-        headers: await headers()
+        headers: await headers(),
     });
 
     if (session) {
-        redirect('/dashboard');
+        redirect("/dashboard");
     }
 
     return <SignInView />;

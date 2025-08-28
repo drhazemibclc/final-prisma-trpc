@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { LogOutIcon } from 'lucide-react';
-import { authClient } from '@/lib/auth/auth-client';
+import { LogOutIcon } from "lucide-react";
+import { authClient } from "@/lib/auth/auth-client";
 
-import { Button } from './ui/button';
+import { Button } from "./ui/button";
 
 export const LogoutButton = () => {
     const handleSignOut = async () => {
@@ -11,12 +11,12 @@ export const LogoutButton = () => {
     };
     return (
         <Button
-            className='bottom-0 w-fit gap-2 px-0 md:px-4'
+            className="bottom-0 w-fit gap-2 px-0 md:px-4"
             onClick={handleSignOut}
-            variant={'outline'}
+            variant={"outline"}
         >
             <LogOutIcon />
-            <span className='hidden lg:block'>Logout</span>
+            <span className="hidden lg:block">Logout</span>
         </Button>
     );
 };
