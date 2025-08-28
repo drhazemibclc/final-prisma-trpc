@@ -52,7 +52,7 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
     "editor.detectIndentation": true,
-    "editor.wordWrap": "on",
+    "editor.wordWrap": "off",
     "editor.minimap.enabled": true,
     "editor.cursorSmoothCaretAnimation": "explicit",
     "editor.formatOnType": true,
